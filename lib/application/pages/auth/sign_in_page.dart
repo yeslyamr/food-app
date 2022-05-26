@@ -5,7 +5,9 @@ import 'package:recipe_app/application/stores/auth/auth_store.dart';
 import 'package:recipe_app/application/stores/auth/sign_in_form.dart/sign_in_form_store.dart';
 
 class SignInPage extends StatefulWidget {
-  const SignInPage({Key? key}) : super(key: key);
+  final VoidCallback onClickedSignUp;
+
+  const SignInPage({Key? key, required this.onClickedSignUp}) : super(key: key);
 
   @override
   State<SignInPage> createState() => _SignInPageState();
@@ -13,7 +15,6 @@ class SignInPage extends StatefulWidget {
 
 class _SignInPageState extends State<SignInPage> {
   final SignInFormStore formStore = SignInFormStore();
-  
 
   var isPasswordObscure = false;
 
@@ -32,7 +33,7 @@ class _SignInPageState extends State<SignInPage> {
   @override
   Widget build(BuildContext context) {
     final authStore = Provider.of<AuthStore>(context);
-    
+
     return Scaffold(
       appBar: AppBar(title: const Text("Sign in")),
       body: Center(
@@ -80,12 +81,8 @@ class _SignInPageState extends State<SignInPage> {
             const SizedBox(height: 10),
             Observer(
               builder: (_) => ElevatedButton(
-                onPressed: formStore.canLogin
-                    ? () => authStore.signUpWithEmailAndPassword(
-                        email: formStore.emailAddress,
-                        password: formStore.password)
-                    : null,
-                child: const Text("Sign up"),
+                onPressed:  widget.onClickedSignUp,
+                child: const Text("Go to Sign up page"),
               ),
             ),
           ],

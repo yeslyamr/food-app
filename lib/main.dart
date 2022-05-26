@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'package:recipe_app/application/pages/auth/sign_in_page.dart';
+import 'package:recipe_app/application/pages/auth/sign_up_page.dart';
 import 'package:recipe_app/application/stores/auth/auth_store.dart';
 import 'package:recipe_app/domain/services/authentication_service.dart';
 import 'firebase_options.dart';
@@ -30,6 +31,7 @@ class MyApp extends StatelessWidget {
       child: const MaterialApp(
         title: 'Food app',
         home: SplashPage(),
+        // routes: ,
       ),
     );
   }
@@ -46,14 +48,42 @@ class SplashPage extends StatelessWidget {
       body: StreamBuilder<User?>(
           stream: authStore.authStateStream,
           builder: (context, snapshot) {
-            if (snapshot.hasData) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if (snapshot.hasData) {
               return const HomePage();
             } else {
-              return const SignInPage();
+              return const AuthPage();
             }
           }),
     );
   }
+}
+
+class AuthPage extends StatefulWidget {
+  const AuthPage({Key? key}) : super(key: key);
+
+  @override
+  State<AuthPage> createState() => _AuthPageState();
+}
+
+class _AuthPageState extends State<AuthPage> {
+  bool isSignUpPage = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return isSignUpPage
+        ? SignUpPage(
+            onClickedSignIn: toggle,
+          )
+        : SignInPage(
+            onClickedSignUp: toggle,
+          );
+  }
+
+  void toggle() => setState(() => isSignUpPage = !isSignUpPage);
 }
 
 class HomePage extends StatelessWidget {

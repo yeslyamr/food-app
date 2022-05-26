@@ -24,7 +24,7 @@ class FirebaseAuthenticationService implements AuthenticationService {
   Future<void> signInWithEmailAndPassword(
       {required String email, required String password}) async {
     try {
-      final userCredential = await _firebaseAuth.signInWithEmailAndPassword(
+      await _firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
     } on FirebaseAuthException catch (e) {
       print(e.message);
@@ -35,7 +35,7 @@ class FirebaseAuthenticationService implements AuthenticationService {
   Future<void> signUpWithEmailAndPassword(
       {required String email, required String password}) async {
     try {
-      final userCredential = await _firebaseAuth.createUserWithEmailAndPassword(
+      await _firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: password);
     } on FirebaseAuthException catch (e) {
       print(e.message);
