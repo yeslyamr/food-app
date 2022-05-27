@@ -33,11 +33,18 @@ class _SignUpPageState extends State<SignUpPage> {
     final authStore = Provider.of<AuthStore>(context);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Sign Up')),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
             children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 75.0),
+                child: Image(
+                    height:
+                        MediaQuery.of(context).size.height > 800 ? 191.0 : 150,
+                    fit: BoxFit.fill,
+                    image: const AssetImage('assets/img/logo_transparent.png')),
+              ),
               const SizedBox(height: 20),
               _UsernameTextField(formStore: formStore),
               const SizedBox(height: 10),
@@ -153,6 +160,7 @@ class PasswordTextField extends StatefulWidget {
   @override
   State<PasswordTextField> createState() => _PasswordTextFieldState();
 }
+
 class _PasswordTextFieldState extends State<PasswordTextField> {
   var isPasswordObscure = false;
 
