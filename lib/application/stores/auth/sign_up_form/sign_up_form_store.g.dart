@@ -17,6 +17,22 @@ mixin _$SignUpFormStore on _SignUpFormStore, Store {
               name: '_SignUpFormStore.canRegister'))
           .value;
 
+  late final _$usernameAtom =
+      Atom(name: '_SignUpFormStore.username', context: context);
+
+  @override
+  String get username {
+    _$usernameAtom.reportRead();
+    return super.username;
+  }
+
+  @override
+  set username(String value) {
+    _$usernameAtom.reportWrite(value, super.username, () {
+      super.username = value;
+    });
+  }
+
   late final _$emailAddressAtom =
       Atom(name: '_SignUpFormStore.emailAddress', context: context);
 
@@ -49,22 +65,6 @@ mixin _$SignUpFormStore on _SignUpFormStore, Store {
     });
   }
 
-  late final _$confirmPasswordAtom =
-      Atom(name: '_SignUpFormStore.confirmPassword', context: context);
-
-  @override
-  String get confirmPassword {
-    _$confirmPasswordAtom.reportRead();
-    return super.confirmPassword;
-  }
-
-  @override
-  set confirmPassword(String value) {
-    _$confirmPasswordAtom.reportWrite(value, super.confirmPassword, () {
-      super.confirmPassword = value;
-    });
-  }
-
   late final _$_SignUpFormStoreActionController =
       ActionController(name: '_SignUpFormStore', context: context);
 
@@ -91,11 +91,22 @@ mixin _$SignUpFormStore on _SignUpFormStore, Store {
   }
 
   @override
+  dynamic validateUsername(String input) {
+    final _$actionInfo = _$_SignUpFormStoreActionController.startAction(
+        name: '_SignUpFormStore.validateUsername');
+    try {
+      return super.validateUsername(input);
+    } finally {
+      _$_SignUpFormStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
+username: ${username},
 emailAddress: ${emailAddress},
 password: ${password},
-confirmPassword: ${confirmPassword},
 canRegister: ${canRegister}
     ''';
   }
@@ -109,6 +120,22 @@ mixin _$FormErrorState on _FormErrorState, Store {
       (_$hasErrorsComputed ??= Computed<bool>(() => super.hasErrors,
               name: '_FormErrorState.hasErrors'))
           .value;
+
+  late final _$usernameAtom =
+      Atom(name: '_FormErrorState.username', context: context);
+
+  @override
+  String? get username {
+    _$usernameAtom.reportRead();
+    return super.username;
+  }
+
+  @override
+  set username(String? value) {
+    _$usernameAtom.reportWrite(value, super.username, () {
+      super.username = value;
+    });
+  }
 
   late final _$emailAtom =
       Atom(name: '_FormErrorState.email', context: context);
@@ -142,28 +169,12 @@ mixin _$FormErrorState on _FormErrorState, Store {
     });
   }
 
-  late final _$confirmPasswordAtom =
-      Atom(name: '_FormErrorState.confirmPassword', context: context);
-
-  @override
-  String? get confirmPassword {
-    _$confirmPasswordAtom.reportRead();
-    return super.confirmPassword;
-  }
-
-  @override
-  set confirmPassword(String? value) {
-    _$confirmPasswordAtom.reportWrite(value, super.confirmPassword, () {
-      super.confirmPassword = value;
-    });
-  }
-
   @override
   String toString() {
     return '''
+username: ${username},
 email: ${email},
 password: ${password},
-confirmPassword: ${confirmPassword},
 hasErrors: ${hasErrors}
     ''';
   }

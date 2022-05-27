@@ -75,12 +75,8 @@ class _AuthPageState extends State<AuthPage> {
   @override
   Widget build(BuildContext context) {
     return isSignUpPage
-        ? SignUpPage(
-            onClickedSignIn: toggle,
-          )
-        : SignInPage(
-            onClickedSignUp: toggle,
-          );
+        ? SignUpPage(onClickedSignIn: toggle)
+        : SignInPage(onClickedSignUp: toggle);
   }
 
   void toggle() => setState(() => isSignUpPage = !isSignUpPage);
@@ -96,9 +92,16 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('Home page')),
       body: Center(
-        child: ElevatedButton(
-            onPressed: () => authStore.signOut(),
-            child: const Text('Sign Out')),
+        child: Column(
+          children: [
+            Text(FirebaseAuth.instance.currentUser?.displayName ??
+                'no disp name'),
+            Text(FirebaseAuth.instance.currentUser?.email ?? 'no email'),
+            ElevatedButton(
+                onPressed: () => authStore.signOut(),
+                child: const Text('Sign Out')),
+          ],
+        ),
       ),
     );
   }

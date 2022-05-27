@@ -37,57 +37,55 @@ class _SignInPageState extends State<SignInPage> {
     return Scaffold(
       appBar: AppBar(title: const Text("Sign in")),
       body: Center(
-          child: Form(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Observer(
-              builder: (_) => TextField(
-                onChanged: (value) => formStore.emailAddress = value.trim(),
-                decoration: InputDecoration(
-                    labelText: 'Email',
-                    hintText: 'Enter your email address',
-                    errorText: formStore.error.email),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Observer(
+                builder: (_) => TextField(
+                  onChanged: (value) => formStore.emailAddress = value.trim(),
+                  decoration: InputDecoration(
+                      labelText: 'Email',
+                      hintText: 'Enter your email address',
+                      errorText: formStore.error.email),
+                ),
               ),
-            ),
-            const SizedBox(height: 10),
-            Observer(
-              builder: (_) => TextField(
-                obscureText: isPasswordObscure,
-                onChanged: (value) => formStore.password = value.trim(),
-                decoration: InputDecoration(
-                    labelText: 'Password',
-                    suffixIcon: IconButton(
-                        onPressed: () => setState(() {
-                              isPasswordObscure = !isPasswordObscure;
-                            }),
-                        icon: isPasswordObscure
-                            ? const Icon(Icons.visibility_off)
-                            : const Icon(Icons.visibility)),
-                    errorText: formStore.error.password),
+              const SizedBox(height: 10),
+              Observer(
+                builder: (_) => TextField(
+                  obscureText: isPasswordObscure,
+                  onChanged: (value) => formStore.password = value.trim(),
+                  decoration: InputDecoration(
+                      labelText: 'Password',
+                      suffixIcon: IconButton(
+                          onPressed: () => setState(() {
+                                isPasswordObscure = !isPasswordObscure;
+                              }),
+                          icon: isPasswordObscure
+                              ? const Icon(Icons.visibility_off)
+                              : const Icon(Icons.visibility)),
+                      errorText: formStore.error.password),
+                ),
               ),
-            ),
-            const SizedBox(height: 10),
-            Observer(
-              builder: (_) => ElevatedButton(
-                onPressed: formStore.canLogin
-                    ? () => authStore.signInWithEmailAndPassword(
-                        email: formStore.emailAddress,
-                        password: formStore.password)
-                    : null,
-                child: const Text("Sign in"),
+              const SizedBox(height: 10),
+              Observer(
+                builder: (_) => ElevatedButton(
+                  onPressed: formStore.canLogin
+                      ? () => authStore.signInWithEmailAndPassword(
+                          email: formStore.emailAddress,
+                          password: formStore.password)
+                      : null,
+                  child: const Text("Sign in"),
+                ),
               ),
-            ),
-            const SizedBox(height: 10),
-            Observer(
-              builder: (_) => ElevatedButton(
-                onPressed:  widget.onClickedSignUp,
-                child: const Text("Go to Sign up page"),
+              const SizedBox(height: 10),
+              Observer(
+                builder: (_) => ElevatedButton(
+                  onPressed:  widget.onClickedSignUp,
+                  child: const Text("Go to Sign up page"),
+                ),
               ),
-            ),
-          ],
-        ),
-      )),
+            ],
+          )),
     );
   }
 }

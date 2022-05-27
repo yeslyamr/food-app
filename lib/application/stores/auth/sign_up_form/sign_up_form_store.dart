@@ -10,13 +10,13 @@ abstract class _SignUpFormStore with Store {
   final FormErrorState error = FormErrorState();
 
   @observable
+  String username = '';
+
+  @observable
   String emailAddress = '';
 
   @observable
   String password = '';
-
-  @observable
-  String confirmPassword = '';
 
   @action
   void validateEmailAddress(String input) {
@@ -35,16 +35,26 @@ abstract class _SignUpFormStore with Store {
         : 'Password should be at least 8 characters';
   }
 
+  @action
+  validateUsername(String input) {
+    error.username = input.isNotEmpty ? null : 'Username should not be empty';
+  }
+
   @computed
   bool get canRegister =>
-      !error.hasErrors && emailAddress.isNotEmpty && password.isNotEmpty;
+      !error.hasErrors &&
+      emailAddress.isNotEmpty &&
+      password.isNotEmpty &&
+      username.isNotEmpty;
 
   late List<ReactionDisposer> _disposers;
 
   void setupValidations() {
     _disposers = [
       reaction((_) => emailAddress, validateEmailAddress),
-      reaction((_) => password, validatePassword)
+      reaction((_) => password, validatePassword),
+      reaction((_) => username, validateUsername)
+
     ];
   }
 
@@ -59,13 +69,13 @@ class FormErrorState = _FormErrorState with _$FormErrorState;
 
 abstract class _FormErrorState with Store {
   @observable
+  String? username;
+
+  @observable
   String? email;
 
   @observable
   String? password;
-
-  @observable
-  String? confirmPassword;
 
   @computed
   bool get hasErrors => email != null || password != null;

@@ -7,7 +7,9 @@ abstract class AuthenticationService {
       {required String email, required String password});
 
   Future<void> signUpWithEmailAndPassword(
-      {required String email, required String password});
+      {required String email,
+      required String password,
+      required String username});
 
   Future<void> signOut();
 }
@@ -33,10 +35,13 @@ class FirebaseAuthenticationService implements AuthenticationService {
 
   @override
   Future<void> signUpWithEmailAndPassword(
-      {required String email, required String password}) async {
+      {required String email,
+      required String password,
+      required String username}) async {
     try {
       await _firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: password);
+      await _firebaseAuth.currentUser?.updateDisplayName(username);
     } on FirebaseAuthException catch (e) {
       print(e.message);
     }

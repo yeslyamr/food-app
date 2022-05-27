@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mobx/mobx.dart';
 import 'package:recipe_app/domain/services/authentication_service.dart';
@@ -20,8 +22,8 @@ abstract class _AuthStore with Store {
   }
 
   Future<void> signUpWithEmailAndPassword(
-      {required String email, required String password}) async {
-    await authService.signUpWithEmailAndPassword(email: email, password: password);
+      {required String email, required String password, required String username}) async {
+    await authService.signUpWithEmailAndPassword(email: email, password: password, username: username);
   }
 
   Future<void> signOut() async {
