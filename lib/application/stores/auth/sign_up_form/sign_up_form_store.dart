@@ -23,14 +23,14 @@ abstract class _SignUpFormStore with Store {
     const emailRegExp =
         r"""^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+""";
 
-    error.email = RegExp(emailRegExp).hasMatch(input) || input.isEmpty
+    error.email = RegExp(emailRegExp).hasMatch(input) 
         ? null
         : 'Email address is invalid';
   }
 
   @action
   void validatePassword(String input) {
-    error.password = input.length >= 8 || input.isEmpty
+    error.password = input.length >= 8 
         ? null
         : 'Password should be at least 8 characters';
   }
@@ -40,12 +40,16 @@ abstract class _SignUpFormStore with Store {
     error.username = input.isNotEmpty ? null : 'Username should not be empty';
   }
 
+  void validateAll() {
+    validateUsername(username);
+    validateEmailAddress(emailAddress);
+    validatePassword(password);
+  }
+
   @computed
   bool get canRegister =>
-      !error.hasErrors &&
-      emailAddress.isNotEmpty &&
-      password.isNotEmpty &&
-      username.isNotEmpty;
+      !error.hasErrors; 
+      // && emailAddress.isNotEmpty && password.isNotEmpty && username.isNotEmpty;
 
   late List<ReactionDisposer> _disposers;
 
@@ -54,7 +58,6 @@ abstract class _SignUpFormStore with Store {
       reaction((_) => emailAddress, validateEmailAddress),
       reaction((_) => password, validatePassword),
       reaction((_) => username, validateUsername)
-
     ];
   }
 

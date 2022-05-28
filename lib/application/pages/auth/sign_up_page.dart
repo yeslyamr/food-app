@@ -19,7 +19,6 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   void initState() {
     super.initState();
-    formStore.setupValidations();
   }
 
   @override
@@ -62,6 +61,7 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 }
+
 class _UsernameTextField extends StatelessWidget {
   const _UsernameTextField({
     Key? key,
@@ -231,12 +231,19 @@ class _SignUpButton extends StatelessWidget {
             minimumSize:
                 MaterialStateProperty.all(const Size(double.infinity, 50)),
           ),
-          onPressed: formStore.canRegister
-              ? () => authStore.signUpWithEmailAndPassword(
+          onPressed: () {
+            // sets up reactions for validation first time the "Sign up" button is pressed
+            // And instantly validates all fields
+            formStore.setupValidations();
+            formStore.validateAll();
+            // print('CAN REGISTER: ${formStore.canRegister}');
+            if (formStore.canRegister) {
+              authStore.signUpWithEmailAndPassword(
                   email: formStore.emailAddress,
                   password: formStore.password,
-                  username: formStore.username)
-              : null,
+                  username: formStore.username);
+            }
+          },
           child: const Text("Sign up"),
         ),
       ),

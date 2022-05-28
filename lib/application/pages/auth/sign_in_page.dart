@@ -22,7 +22,6 @@ class _SignInPageState extends State<SignInPage> {
   @override
   void initState() {
     super.initState();
-    formStore.setupValidations();
   }
 
   @override
@@ -36,7 +35,6 @@ class _SignInPageState extends State<SignInPage> {
     final authStore = Provider.of<AuthStore>(context);
 
     return Scaffold(
-      // appBar: AppBar(title: const Text("Sign in")),
       body: SafeArea(
         child: SingleChildScrollView(
             child: Column(
@@ -189,12 +187,19 @@ class _SignInButton extends StatelessWidget {
             minimumSize:
                 MaterialStateProperty.all(const Size(double.infinity, 50)),
           ),
-          onPressed: formStore.canLogin
-              ? () => authStore.signInWithEmailAndPassword(
-                    email: formStore.emailAddress,
-                    password: formStore.password,
-                  )
-              : null,
+          onPressed: () {
+            // sets up reactions for validation first time the "Login" button is pressed
+            // And instantly validates all fields
+            formStore.setupValidations();
+            formStore.validateAll();
+            // print("CAN LOGIN: ${formStore.canLogin}");
+            if (formStore.canLogin) {
+              authStore.signInWithEmailAndPassword(
+                email: formStore.emailAddress,
+                password: formStore.password,
+              );
+            }
+          },
           child: const Text("Login"),
         ),
       ),
