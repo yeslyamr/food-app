@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:recipe_app/core/Utils.dart';
 
 abstract class AuthenticationService {
   Stream<User?> get authState;
@@ -29,7 +30,8 @@ class FirebaseAuthenticationService implements AuthenticationService {
       await _firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
     } on FirebaseAuthException catch (e) {
-      print(e.message);
+      Utils.showSnackBar(e.message);
+      // print('Exc mes: ${e.message} and code ${e.code} ${e.credential}');
     }
   }
 
@@ -43,7 +45,7 @@ class FirebaseAuthenticationService implements AuthenticationService {
           email: email, password: password);
       await _firebaseAuth.currentUser?.updateDisplayName(username);
     } on FirebaseAuthException catch (e) {
-      print(e.message);
+      Utils.showSnackBar('${e.message} + ${e.code}');
     }
   }
 

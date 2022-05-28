@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'package:recipe_app/application/pages/auth/auth_page.dart';
 import 'package:recipe_app/application/stores/auth/auth_store.dart';
+import 'package:recipe_app/core/Utils.dart';
 import 'package:recipe_app/domain/services/authentication_service.dart';
 import 'firebase_options.dart';
 
@@ -27,17 +28,18 @@ class MyApp extends StatelessWidget {
               AuthStore(FirebaseAuthenticationService(FirebaseAuth.instance)),
         )
       ],
-      child: const MaterialApp(
+      child: MaterialApp(
+        scaffoldMessengerKey: Utils.messengerKey,
         title: 'Food app',
-        home: SplashPage(),
+        home: const AuthenticationWrapper(),
         // routes: ,
       ),
     );
   }
 }
 
-class SplashPage extends StatelessWidget {
-  const SplashPage({Key? key}) : super(key: key);
+class AuthenticationWrapper extends StatelessWidget {
+  const AuthenticationWrapper({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
