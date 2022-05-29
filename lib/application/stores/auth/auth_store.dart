@@ -18,12 +18,24 @@ abstract class _AuthStore with Store {
 
   Future<void> signInWithEmailAndPassword(
       {required String email, required String password}) async {
-    await authService.signInWithEmailAndPassword(email: email, password: password);
+    await authService.signInWithEmailAndPassword(
+        email: email, password: password);
   }
 
   Future<void> signUpWithEmailAndPassword(
-      {required String email, required String password, required String username}) async {
-    await authService.signUpWithEmailAndPassword(email: email, password: password, username: username);
+      {required String email,
+      required String password,
+      required String username}) async {
+    await authService.signUpWithEmailAndPassword(
+        email: email, password: password, username: username);
+  }
+
+  Future<void> resetPassword({required String email}) async {
+    try {
+      await authService.resetPassword(email: email);
+    } on FirebaseAuthException {
+      rethrow;
+    }
   }
 
   Future<void> signOut() async {

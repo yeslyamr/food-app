@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
+import 'package:recipe_app/application/pages/auth/password_reset_page.dart';
 import 'package:recipe_app/application/stores/auth/auth_store.dart';
 import 'package:recipe_app/application/stores/auth/sign_in_form.dart/sign_in_form_store.dart';
 
@@ -38,7 +39,6 @@ class _SignInPageState extends State<SignInPage> {
       body: SafeArea(
         child: SingleChildScrollView(
             child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Padding(
               padding: const EdgeInsets.only(top: 75.0),
@@ -51,7 +51,21 @@ class _SignInPageState extends State<SignInPage> {
             _EmailTextField(formStore: formStore),
             const SizedBox(height: 10),
             PasswordTextField(formStore: formStore),
-            const SizedBox(height: 30),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => const PasswordResetPage()));
+                      },
+                      child: const Text('Forgot password?')),
+                ],
+              ),
+            ),
+            const SizedBox(height: 20),
             _SignInButton(formStore: formStore, authStore: authStore),
             const SizedBox(height: 20),
             _NavigateToSignUpPageButton(widget: widget),

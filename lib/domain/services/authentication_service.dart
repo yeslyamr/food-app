@@ -13,6 +13,8 @@ abstract class AuthenticationService {
       required String username});
 
   Future<void> signOut();
+
+  Future<void> resetPassword({required String email});
 }
 
 class FirebaseAuthenticationService implements AuthenticationService {
@@ -43,9 +45,10 @@ class FirebaseAuthenticationService implements AuthenticationService {
     try {
       await _firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: password);
+      //todo: asdf
       await _firebaseAuth.currentUser?.updateDisplayName(username);
     } on FirebaseAuthException catch (e) {
-      Utils.showSnackBar('${e.message} + ${e.code}');
+      Utils.showSnackBar(e.message);
     }
   }
 
@@ -54,7 +57,12 @@ class FirebaseAuthenticationService implements AuthenticationService {
     await _firebaseAuth.signOut();
   }
 
-  // Future<String> signInWithGoogle() {
-  //
-  // }
+  @override
+  Future<void> resetPassword({required String email}) async {
+    try {
+      await _firebaseAuth.sendPasswordResetEmail(email: email);
+    } on FirebaseAuthException {
+      rethrow;
+    }
+  }
 }
