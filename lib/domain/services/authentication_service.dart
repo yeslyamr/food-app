@@ -15,6 +15,8 @@ abstract class AuthenticationService {
   Future<void> signOut();
 
   Future<void> resetPassword({required String email});
+
+  Future<void> sendEmailVerification();
 }
 
 class FirebaseAuthenticationService implements AuthenticationService {
@@ -63,6 +65,16 @@ class FirebaseAuthenticationService implements AuthenticationService {
       await _firebaseAuth.sendPasswordResetEmail(email: email);
     } on FirebaseAuthException {
       rethrow;
+    }
+  }
+
+  @override
+  Future<void> sendEmailVerification() async {
+    final user = _firebaseAuth.currentUser;
+    try {
+      user?.sendEmailVerification();
+    } on FirebaseAuthException catch (e) {
+      Utils.showSnackBar(e.message);
     }
   }
 }

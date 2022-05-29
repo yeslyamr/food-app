@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
-import 'package:recipe_app/application/pages/auth/auth_page.dart';
+import 'package:recipe_app/application/pages/auth/auth_wrapper.dart';
 import 'package:recipe_app/application/stores/auth/auth_store.dart';
 import 'package:recipe_app/core/Utils.dart';
 import 'package:recipe_app/domain/services/authentication_service.dart';
@@ -32,36 +32,12 @@ class MyApp extends StatelessWidget {
         scaffoldMessengerKey: Utils.messengerKey,
         title: 'Food app',
         home: const AuthenticationWrapper(),
-        // routes: ,
       ),
     );
   }
 }
 
-class AuthenticationWrapper extends StatelessWidget {
-  const AuthenticationWrapper({Key? key}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    final authStore = Provider.of<AuthStore>(context);
-
-    return Scaffold(
-      body: StreamBuilder<User?>(
-          stream: authStore.authStateStream,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            } else if (snapshot.hasData) {
-              return const HomePage();
-            } else {
-              return const AuthPage();
-            }
-          }),
-    );
-  }
-}
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);

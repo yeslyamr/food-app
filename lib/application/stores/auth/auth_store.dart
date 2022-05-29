@@ -38,6 +38,10 @@ abstract class _AuthStore with Store {
     }
   }
 
+  Future<void> sendEmailVerification() async {
+    authService.sendEmailVerification();
+  }
+
   Future<void> signOut() async {
     await authService.signOut();
   }
