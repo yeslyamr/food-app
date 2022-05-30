@@ -222,8 +222,7 @@ class _SignUpButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(left: 20.0, right: 20),
-      child: Observer(
-        builder: (_) => ElevatedButton(
+      child: ElevatedButton(
           style: ButtonStyle(
             shape: MaterialStateProperty.all(RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(15.0),
@@ -246,7 +245,6 @@ class _SignUpButton extends StatelessWidget {
           },
           child: const Text("Sign up"),
         ),
-      ),
     );
   }
 }

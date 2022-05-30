@@ -51,7 +51,7 @@ abstract class _SignUpFormStore with Store {
       !error.hasErrors; 
       // && emailAddress.isNotEmpty && password.isNotEmpty && username.isNotEmpty;
 
-  late List<ReactionDisposer> _disposers;
+  List<ReactionDisposer> _disposers = [];
 
   void setupValidations() {
     _disposers = [

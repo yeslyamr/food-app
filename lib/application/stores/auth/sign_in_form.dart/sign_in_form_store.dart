@@ -25,9 +25,8 @@ abstract class _SignInFormStore with Store {
 
   @action
   void validatePassword(String input) {
-    error.password = input.length >= 8 
-        ? null
-        : 'Password should be at least 8 characters';
+    error.password =
+        input.length >= 8 ? null : 'Password should be at least 8 characters';
   }
 
   void validateAll() {
@@ -37,9 +36,9 @@ abstract class _SignInFormStore with Store {
 
   @computed
   bool get canLogin =>
-      !error.hasErrors;// && emailAddress.isNotEmpty && password.isNotEmpty;
+      !error.hasErrors; // && emailAddress.isNotEmpty && password.isNotEmpty;
 
-  late List<ReactionDisposer> _disposers;
+  List<ReactionDisposer> _disposers = [];
 
   void setupValidations() {
     _disposers = [

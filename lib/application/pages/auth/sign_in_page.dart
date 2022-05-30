@@ -192,30 +192,28 @@ class _SignInButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(left: 20.0, right: 20),
-      child: Observer(
-        builder: (_) => ElevatedButton(
-          style: ButtonStyle(
-            shape: MaterialStateProperty.all(RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15.0),
-            )),
-            minimumSize:
-                MaterialStateProperty.all(const Size(double.infinity, 50)),
-          ),
-          onPressed: () {
-            // sets up reactions for validation first time the "Login" button is pressed
-            // And instantly validates all fields
-            formStore.setupValidations();
-            formStore.validateAll();
-            // print("CAN LOGIN: ${formStore.canLogin}");
-            if (formStore.canLogin) {
-              authStore.signInWithEmailAndPassword(
-                email: formStore.emailAddress,
-                password: formStore.password,
-              );
-            }
-          },
-          child: const Text("Login"),
+      child: ElevatedButton(
+        style: ButtonStyle(
+          shape: MaterialStateProperty.all(RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15.0),
+          )),
+          minimumSize:
+              MaterialStateProperty.all(const Size(double.infinity, 50)),
         ),
+        onPressed: () {
+          // sets up reactions for validation first time the "Login" button is pressed
+          // And instantly validates all fields
+          formStore.setupValidations();
+          formStore.validateAll();
+          // print("CAN LOGIN: ${formStore.canLogin}");
+          if (formStore.canLogin) {
+            authStore.signInWithEmailAndPassword(
+              email: formStore.emailAddress,
+              password: formStore.password,
+            );
+          }
+        },
+        child: const Text("Login"),
       ),
     );
   }
