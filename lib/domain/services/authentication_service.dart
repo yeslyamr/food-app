@@ -4,6 +4,8 @@ import 'package:recipe_app/core/Utils.dart';
 abstract class AuthenticationService {
   Stream<User?> get authState;
 
+  Stream<User?> get userChanges;
+
   Future<void> signInWithEmailAndPassword(
       {required String email, required String password});
 
@@ -16,7 +18,7 @@ abstract class AuthenticationService {
 
   Future<void> resetPassword({required String email});
 
-  Future<void> sendEmailVerification();
+  Future<void> sendEmailVerification();  
 }
 
 class FirebaseAuthenticationService implements AuthenticationService {
@@ -26,6 +28,9 @@ class FirebaseAuthenticationService implements AuthenticationService {
 
   @override
   Stream<User?> get authState => _firebaseAuth.authStateChanges();
+
+  @override
+  Stream<User?> get userChanges => _firebaseAuth.userChanges();
 
   @override
   Future<void> signInWithEmailAndPassword(

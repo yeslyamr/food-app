@@ -9,16 +9,19 @@ part 'auth_store.g.dart';
 class AuthStore = _AuthStore with _$AuthStore;
 
 abstract class _AuthStore with Store {
-  final AuthenticationService authService;
+  final AuthenticationService _authService;
 
-  _AuthStore(this.authService);
+  _AuthStore(this._authService);
 
   late final ObservableStream<User?> authStateStream =
-      ObservableStream(authService.authState);
+      ObservableStream(_authService.authState);
+
+  late final ObservableStream<User?> userChanges =
+      ObservableStream(_authService.userChanges);
 
   Future<void> signInWithEmailAndPassword(
       {required String email, required String password}) async {
-    await authService.signInWithEmailAndPassword(
+    await _authService.signInWithEmailAndPassword(
         email: email, password: password);
   }
 
@@ -26,23 +29,23 @@ abstract class _AuthStore with Store {
       {required String email,
       required String password,
       required String username}) async {
-    await authService.signUpWithEmailAndPassword(
+    await _authService.signUpWithEmailAndPassword(
         email: email, password: password, username: username);
   }
 
   Future<void> resetPassword({required String email}) async {
     try {
-      await authService.resetPassword(email: email);
+      await _authService.resetPassword(email: email);
     } on FirebaseAuthException {
       rethrow;
     }
   }
 
   Future<void> sendEmailVerification() async {
-    authService.sendEmailVerification();
+    _authService.sendEmailVerification();
   }
 
   Future<void> signOut() async {
-    await authService.signOut();
+    await _authService.signOut();
   }
 }

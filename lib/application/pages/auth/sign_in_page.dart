@@ -1,10 +1,11 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:recipe_app/application/pages/auth/password_reset_page.dart';
+import 'package:recipe_app/application/navigation/route_utils.dart';
 import 'package:recipe_app/application/stores/auth/auth_store.dart';
-import 'package:recipe_app/application/stores/auth/sign_in_form.dart/sign_in_form_store.dart';
+import 'package:recipe_app/application/stores/auth/sign_in_form/sign_in_form_store.dart';
 
 class SignInPage extends StatefulWidget {
   final VoidCallback onClickedSignUp;
@@ -58,8 +59,9 @@ class _SignInPageState extends State<SignInPage> {
                 children: [
                   TextButton(
                       onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => const PasswordResetPage()));
+                        // Navigator.of(context).push(MaterialPageRoute(
+                        //     builder: (context) => const PasswordResetPage()));
+                        context.pushNamed(AppRoutes.passwordResetPage.name);
                       },
                       child: const Text('Forgot password?')),
                 ],
@@ -205,7 +207,7 @@ class _SignInButton extends StatelessWidget {
           // And instantly validates all fields
           formStore.setupValidations();
           formStore.validateAll();
-          // print("CAN LOGIN: ${formStore.canLogin}");
+          
           if (formStore.canLogin) {
             authStore.signInWithEmailAndPassword(
               email: formStore.emailAddress,
@@ -238,7 +240,9 @@ class _NavigateToSignUpPageButton extends StatelessWidget {
                 text: 'Register',
                 style: const TextStyle(color: Colors.blue),
                 recognizer: TapGestureRecognizer()
-                  ..onTap = widget.onClickedSignUp)
+                //TODO: 
+                  ..onTap = () => context.goNamed(AppRoutes.signUpPage.name)
+                )
           ]),
     );
   }

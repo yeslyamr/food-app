@@ -1,7 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:recipe_app/application/navigation/route_utils.dart';
 import 'package:recipe_app/application/stores/auth/auth_store.dart';
 import 'package:recipe_app/application/stores/auth/sign_up_form/sign_up_form_store.dart';
 
@@ -223,28 +225,28 @@ class _SignUpButton extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(left: 20.0, right: 20),
       child: ElevatedButton(
-          style: ButtonStyle(
-            shape: MaterialStateProperty.all(RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15.0),
-            )),
-            minimumSize:
-                MaterialStateProperty.all(const Size(double.infinity, 50)),
-          ),
-          onPressed: () {
-            // sets up reactions for validation first time the "Sign up" button is pressed
-            // And instantly validates all fields
-            formStore.setupValidations();
-            formStore.validateAll();
-            // print('CAN REGISTER: ${formStore.canRegister}');
-            if (formStore.canRegister) {
-              authStore.signUpWithEmailAndPassword(
-                  email: formStore.emailAddress,
-                  password: formStore.password,
-                  username: formStore.username);
-            }
-          },
-          child: const Text("Sign up"),
+        style: ButtonStyle(
+          shape: MaterialStateProperty.all(RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15.0),
+          )),
+          minimumSize:
+              MaterialStateProperty.all(const Size(double.infinity, 50)),
         ),
+        onPressed: () {
+          // sets up reactions for validation first time the "Sign up" button is pressed
+          // And instantly validates all fields
+          formStore.setupValidations();
+          formStore.validateAll();
+          
+          if (formStore.canRegister) {
+            authStore.signUpWithEmailAndPassword(
+                email: formStore.emailAddress,
+                password: formStore.password,
+                username: formStore.username);
+          }
+        },
+        child: const Text("Sign up"),
+      ),
     );
   }
 }
@@ -265,10 +267,12 @@ class _NavigateToSignInPageButton extends StatelessWidget {
           style: const TextStyle(color: Colors.black),
           children: [
             TextSpan(
-                text: 'Sign In',
-                style: const TextStyle(color: Colors.blue),
-                recognizer: TapGestureRecognizer()
-                  ..onTap = widget.onClickedSignIn)
+              text: 'Sign In',
+              style: const TextStyle(color: Colors.blue),
+              recognizer: TapGestureRecognizer()
+                //TODO: 
+                ..onTap = () => context.goNamed(AppRoutes.signInPage.name),
+            )
           ]),
     );
   }
