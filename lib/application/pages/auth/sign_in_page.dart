@@ -8,9 +8,8 @@ import 'package:recipe_app/application/stores/auth/auth_store.dart';
 import 'package:recipe_app/application/stores/auth/sign_in_form/sign_in_form_store.dart';
 
 class SignInPage extends StatefulWidget {
-  final VoidCallback onClickedSignUp;
 
-  const SignInPage({Key? key, required this.onClickedSignUp}) : super(key: key);
+  const SignInPage({Key? key}) : super(key: key);
 
   @override
   State<SignInPage> createState() => _SignInPageState();
@@ -52,27 +51,36 @@ class _SignInPageState extends State<SignInPage> {
             _EmailTextField(formStore: formStore),
             const SizedBox(height: 10),
             PasswordTextField(formStore: formStore),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  TextButton(
-                      onPressed: () {
-                        // Navigator.of(context).push(MaterialPageRoute(
-                        //     builder: (context) => const PasswordResetPage()));
-                        context.pushNamed(AppRoutes.passwordResetPage.name);
-                      },
-                      child: const Text('Forgot password?')),
-                ],
-              ),
-            ),
+            const _NavigateToPasswordResetPage(),
             const SizedBox(height: 20),
             _SignInButton(formStore: formStore, authStore: authStore),
             const SizedBox(height: 20),
-            _NavigateToSignUpPageButton(widget: widget),
+            const _NavigateToSignUpPageButton(),
           ],
         )),
+      ),
+    );
+  }
+}
+
+class _NavigateToPasswordResetPage extends StatelessWidget {
+  const _NavigateToPasswordResetPage({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          TextButton(
+              onPressed: () {
+                context.pushNamed(AppRoutes.passwordResetPage.name);
+              },
+              child: const Text('Forgot password?')),
+        ],
       ),
     );
   }
@@ -202,7 +210,7 @@ class _SignInButton extends StatelessWidget {
           minimumSize:
               MaterialStateProperty.all(const Size(double.infinity, 50)),
         ),
-        onPressed: () {
+        onPressed: () async {
           // sets up reactions for validation first time the "Login" button is pressed
           // And instantly validates all fields
           formStore.setupValidations();
@@ -224,10 +232,8 @@ class _SignInButton extends StatelessWidget {
 class _NavigateToSignUpPageButton extends StatelessWidget {
   const _NavigateToSignUpPageButton({
     Key? key,
-    required this.widget,
   }) : super(key: key);
 
-  final SignInPage widget;
 
   @override
   Widget build(BuildContext context) {

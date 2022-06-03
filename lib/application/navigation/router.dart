@@ -6,21 +6,15 @@ import 'package:recipe_app/application/pages/auth/email_verification_page.dart';
 import 'package:recipe_app/application/pages/auth/password_reset_page.dart';
 import 'package:recipe_app/application/pages/auth/sign_in_page.dart';
 import 'package:recipe_app/application/pages/auth/sign_up_page.dart';
-import 'package:recipe_app/application/stores/auth/auth_store.dart';
 import 'package:recipe_app/main.dart';
 
 class MyRouter {
-  final AuthStore authStore;
-
-  MyRouter(this.authStore);
+  MyRouter();
 
   late final _router = GoRouter(
     redirect: (GoRouterState state) {
       // takes current user if signed in or null otherwise
       final User? currentUser = FirebaseAuth.instance.currentUser;
-      if (currentUser != null) {
-        currentUser.reload();
-      }
 
       // checks if user is signed in
       final bool isLoggedIn = currentUser != null;
@@ -50,7 +44,8 @@ class MyRouter {
       // other returns null
       return null;
     },
-    refreshListenable: GoRouterRefreshStream(FirebaseAuth.instance.userChanges()),
+    refreshListenable:
+        GoRouterRefreshStream(FirebaseAuth.instance.userChanges()),
     errorPageBuilder: (context, state) {
       return MaterialPage(
           child: Scaffold(
@@ -78,13 +73,13 @@ class MyRouter {
         path: AppRoutes.signInPage.path,
         name: AppRoutes.signInPage.name,
         builder: (BuildContext context, GoRouterState state) =>
-            SignInPage(onClickedSignUp: () {}),
+            const SignInPage(),
       ),
       GoRoute(
         path: AppRoutes.signUpPage.path,
         name: AppRoutes.signUpPage.name,
         builder: (BuildContext context, GoRouterState state) =>
-            SignUpPage(onClickedSignIn: () {}),
+            const SignUpPage(),
       ),
       GoRoute(
         path: AppRoutes.passwordResetPage.path,

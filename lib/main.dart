@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:recipe_app/application/navigation/router.dart';
 import 'package:recipe_app/application/stores/auth/auth_store.dart';
@@ -14,11 +13,14 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
+
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  MyApp({Key? key}) : super(key: key);
+
+  final _myRouter = MyRouter().router;
 
   @override
   Widget build(BuildContext context) {
@@ -28,18 +30,13 @@ class MyApp extends StatelessWidget {
           create: (context) =>
               AuthStore(FirebaseAuthenticationService(FirebaseAuth.instance)),
         ),
-        ProxyProvider<AuthStore, MyRouter>(
-          update: (_, authStore, __) => MyRouter(authStore),
-        )
       ],
       child: Builder(builder: (context) {
-        final myRouter = Provider.of<MyRouter>(context, listen: false).router;
         return MaterialApp.router(
           scaffoldMessengerKey: Utils.messengerKey,
           title: 'Food app',
-          routeInformationParser: myRouter.routeInformationParser,
-          routerDelegate: myRouter.routerDelegate,
-          // home: const AuthenticationWrapper(),
+          routeInformationParser: _myRouter.routeInformationParser,
+          routerDelegate: _myRouter.routerDelegate,
         );
       }),
     );
@@ -56,19 +53,18 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('Home page')),
       body: Center(
-        child: Observer(builder: (_) {
-          return Column(
-            children: [
-              Text(FirebaseAuth.instance.currentUser?.displayName ??
-                  'no disp name'),
-              Text(FirebaseAuth.instance.currentUser?.email ?? 'no email'),
-              Text(FirebaseAuth.instance.currentUser?.emailVerified.toString() ?? 'no email'),
-              ElevatedButton(
-                  onPressed: () => authStore.signOut(),
-                  child: const Text('Sign Out')),
-            ],
-          );
-        }),
+        child: Column(
+          children: [
+            Text(FirebaseAuth.instance.currentUser?.displayName ??
+                'no disp name'),
+            Text(FirebaseAuth.instance.currentUser?.email ?? 'no email'),
+            Text(FirebaseAuth.instance.currentUser?.emailVerified.toString() ??
+                'no email'),
+            ElevatedButton(
+                onPressed: () async => authStore.signOut(),
+                child: const Text('Sign Out')),
+          ],
+        ),
       ),
     );
   }

@@ -8,8 +8,7 @@ import 'package:recipe_app/application/stores/auth/auth_store.dart';
 import 'package:recipe_app/application/stores/auth/sign_up_form/sign_up_form_store.dart';
 
 class SignUpPage extends StatefulWidget {
-  final VoidCallback onClickedSignIn;
-  const SignUpPage({Key? key, required this.onClickedSignIn}) : super(key: key);
+  const SignUpPage({Key? key}) : super(key: key);
 
   @override
   State<SignUpPage> createState() => _SignUpPageState();
@@ -232,7 +231,7 @@ class _SignUpButton extends StatelessWidget {
           minimumSize:
               MaterialStateProperty.all(const Size(double.infinity, 50)),
         ),
-        onPressed: () {
+        onPressed: () async {
           // sets up reactions for validation first time the "Sign up" button is pressed
           // And instantly validates all fields
           formStore.setupValidations();
