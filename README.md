@@ -2,15 +2,23 @@
 
 A new Flutter project.
 
-## Getting Started
+### Built With
 
-This project is a starting point for a Flutter application.
+This section should list any major frameworks/libraries used to bootstrap your project. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
 
-A few resources to get you started if this is your first Flutter project:
+* [Firebase](https://pub.dev/packages/firebase_core)
+* [MobX](https://mobx.netlify.app/)
+* [go_router](https://pub.dev/packages/go_router)
+* [Spoonacular API](https://spoonacular.com/food-api)
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+<!-- ROADMAP -->
+## TODOs
+
+- [x] Add Changelog
+- [x] Add back to top links
+- [ ] Add Additional Templates w/ Examples
+- [ ] Add "components" document to easily copy & paste sections of the readme
+- [ ] Multi-language Support
+    - [ ] Chinese
+    - [ ] Spanish
