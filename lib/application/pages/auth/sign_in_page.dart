@@ -1,14 +1,13 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:recipe_app/application/navigation/route_utils.dart';
+import 'package:recipe_app/application/navigation/auto_router.dart';
 import 'package:recipe_app/application/stores/auth/auth_store.dart';
 import 'package:recipe_app/application/stores/auth/sign_in_form/sign_in_form_store.dart';
 
 class SignInPage extends StatefulWidget {
-
   const SignInPage({Key? key}) : super(key: key);
 
   @override
@@ -36,6 +35,7 @@ class _SignInPageState extends State<SignInPage> {
     final authStore = Provider.of<AuthStore>(context);
 
     return Scaffold(
+      appBar: AppBar(title: const Text('Login')),
       body: SafeArea(
         child: SingleChildScrollView(
             child: Column(
@@ -76,9 +76,8 @@ class _NavigateToPasswordResetPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           TextButton(
-              onPressed: () {
-                context.pushNamed(AppRoutes.passwordResetPage.name);
-              },
+              onPressed: () =>
+                  AutoRouter.of(context).push(const PasswordResetRoute()),
               child: const Text('Forgot password?')),
         ],
       ),
@@ -215,12 +214,13 @@ class _SignInButton extends StatelessWidget {
           // And instantly validates all fields
           formStore.setupValidations();
           formStore.validateAll();
-          
+
           if (formStore.canLogin) {
-            authStore.signInWithEmailAndPassword(
+            await authStore.signInWithEmailAndPassword(
               email: formStore.emailAddress,
               password: formStore.password,
             );
+            context.router.replace(const MainScreenRoute());
           }
         },
         child: const Text("Login"),
@@ -234,7 +234,6 @@ class _NavigateToSignUpPageButton extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-
   @override
   Widget build(BuildContext context) {
     return RichText(
@@ -246,9 +245,7 @@ class _NavigateToSignUpPageButton extends StatelessWidget {
                 text: 'Register',
                 style: const TextStyle(color: Colors.blue),
                 recognizer: TapGestureRecognizer()
-                //TODO: 
-                  ..onTap = () => context.goNamed(AppRoutes.signUpPage.name)
-                )
+                  ..onTap = () => context.router.push(const SignUpRoute()))
           ]),
     );
   }

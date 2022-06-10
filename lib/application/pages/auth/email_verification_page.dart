@@ -1,10 +1,10 @@
 import 'dart:async';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:recipe_app/application/navigation/route_utils.dart';
+import 'package:recipe_app/application/navigation/auto_router.dart';
 import 'package:recipe_app/application/stores/auth/auth_store.dart';
 
 class EmailVerificationPage extends StatefulWidget {
@@ -33,7 +33,9 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
     if (isVerified) {
       timer?.cancel();
       if (!mounted) return;
-      context.goNamed(AppRoutes.main.name);
+      context.router
+          .popUntilRoot(); //const MainScreenRoute(), predicate: (route) => true
+      context.router.replace(const MainScreenRoute());
     }
   }
 
@@ -54,7 +56,10 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
       appBar: AppBar(
         title: const Text('Email verification'),
         leading: IconButton(
-            onPressed: () async => authStore.signOut(),
+            onPressed: () async {
+              authStore.signOut();
+              context.router.pop();
+            },
             icon: const Icon(Icons.arrow_back)),
       ),
       body: Center(

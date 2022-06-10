@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -63,7 +64,7 @@ class _PasswordResetPageState extends State<PasswordResetPage> {
                   if (isSend) {
                     Utils.showSnackBar('Password reset email sent',
                         backgroundColor: Colors.green);
-                    Navigator.of(context).pop();
+                    context.router.pop();
                   } else {
                     setState(() {
                       doValidate = true;
