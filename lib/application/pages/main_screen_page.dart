@@ -10,23 +10,28 @@ class MainScreenPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return AutoTabsScaffold(
         routes: const [
-          SearchRoute(),
+          SearchRouter(),
           SavedRouter(),
         ],
         appBarBuilder: (_, tabsRouter) =>
             AppBar(title: const Text('Home page')),
         bottomNavigationBuilder:
-            (BuildContext context, TabsRouter tabsRouter) => SalomonBottomBar(
-                  currentIndex: tabsRouter.activeIndex,
-                  onTap: tabsRouter.setActiveIndex,
-                  items: [
-                    SalomonBottomBarItem(
-                        icon: const Icon(Icons.search),
-                        title: const Text('Search')),
-                    SalomonBottomBarItem(
-                        icon: const Icon(Icons.favorite_sharp),
-                        title: const Text('Saved'))
-                  ],
+            (BuildContext context, TabsRouter tabsRouter) => SizedBox(
+                  height: kBottomNavigationBarHeight,
+                  child: SalomonBottomBar(
+                    
+                    currentIndex: tabsRouter.activeIndex,
+                    onTap: tabsRouter.setActiveIndex,
+                    items: [
+                      SalomonBottomBarItem(
+                          icon: const Icon(Icons.search),
+                          title: const Text('Search')),
+                      SalomonBottomBarItem(
+                          icon: const Icon(Icons.favorite_sharp),
+                          title: const Text('Saved'))
+                    ],
+                  ),
                 ));
   }
 }
+

@@ -37,6 +37,10 @@ class _$AppRouter extends RootStackRouter {
       return MaterialPageX<dynamic>(
           routeData: routeData, child: const PasswordResetPage());
     },
+    RecipesListRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+          routeData: routeData, child: const RecipesListPage());
+    },
     MainScreenRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
           routeData: routeData, child: const MainScreenPage());
@@ -45,17 +49,17 @@ class _$AppRouter extends RootStackRouter {
       return MaterialPageX<dynamic>(
           routeData: routeData, child: const EmptyRouterPage());
     },
-    SearchRoute.name: (routeData) {
+    SearchRouter.name: (routeData) {
       return MaterialPageX<dynamic>(
-          routeData: routeData, child: const SearchPage());
+          routeData: routeData, child: const EmptyRouterPage());
     },
     SavedRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
           routeData: routeData, child: const SavedPage());
     },
-    RandomRoute.name: (routeData) {
+    SearchRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
-          routeData: routeData, child: const RandomPage());
+          routeData: routeData, child: const SearchPage());
     }
   };
 
@@ -65,6 +69,7 @@ class _$AppRouter extends RootStackRouter {
         RouteConfig(SignUpRoute.name, path: '/register'),
         RouteConfig(EmailVerificationRoute.name, path: '/emailverification'),
         RouteConfig(PasswordResetRoute.name, path: '/login/passwordreset'),
+        RouteConfig(RecipesListRoute.name, path: '/recipes'),
         RouteConfig(MainScreenRoute.name, path: '/', guards: [
           authGuard
         ], children: [
@@ -72,13 +77,15 @@ class _$AppRouter extends RootStackRouter {
               path: 'savedrecipes',
               parent: MainScreenRoute.name,
               children: [
-                RouteConfig(SavedRoute.name,
-                    path: '', parent: SavedRouter.name),
-                RouteConfig(RandomRoute.name,
-                    path: 'rrr', parent: SavedRouter.name)
+                RouteConfig(SavedRoute.name, path: '', parent: SavedRouter.name)
               ]),
-          RouteConfig(SearchRoute.name,
-              path: 'search-page', parent: MainScreenRoute.name)
+          RouteConfig(SearchRouter.name,
+              path: 'search',
+              parent: MainScreenRoute.name,
+              children: [
+                RouteConfig(SearchRoute.name,
+                    path: '', parent: SearchRouter.name)
+              ])
         ])
       ];
 }
@@ -118,6 +125,14 @@ class PasswordResetRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [RecipesListPage]
+class RecipesListRoute extends PageRouteInfo<void> {
+  const RecipesListRoute() : super(RecipesListRoute.name, path: '/recipes');
+
+  static const String name = 'RecipesListRoute';
+}
+
+/// generated route for
 /// [MainScreenPage]
 class MainScreenRoute extends PageRouteInfo<void> {
   const MainScreenRoute({List<PageRouteInfo>? children})
@@ -137,11 +152,12 @@ class SavedRouter extends PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [SearchPage]
-class SearchRoute extends PageRouteInfo<void> {
-  const SearchRoute() : super(SearchRoute.name, path: 'search-page');
+/// [EmptyRouterPage]
+class SearchRouter extends PageRouteInfo<void> {
+  const SearchRouter({List<PageRouteInfo>? children})
+      : super(SearchRouter.name, path: 'search', initialChildren: children);
 
-  static const String name = 'SearchRoute';
+  static const String name = 'SearchRouter';
 }
 
 /// generated route for
@@ -153,9 +169,9 @@ class SavedRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [RandomPage]
-class RandomRoute extends PageRouteInfo<void> {
-  const RandomRoute() : super(RandomRoute.name, path: 'rrr');
+/// [SearchPage]
+class SearchRoute extends PageRouteInfo<void> {
+  const SearchRoute() : super(SearchRoute.name, path: '');
 
-  static const String name = 'RandomRoute';
+  static const String name = 'SearchRoute';
 }

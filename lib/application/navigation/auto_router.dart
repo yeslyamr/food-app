@@ -6,6 +6,7 @@ import 'package:recipe_app/application/pages/auth/password_reset_page.dart';
 import 'package:recipe_app/application/pages/auth/sign_in_page.dart';
 import 'package:recipe_app/application/pages/auth/sign_up_page.dart';
 import 'package:recipe_app/application/pages/main_screen_page.dart';
+import 'package:recipe_app/application/pages/recipes_list_page.dart';
 import 'package:recipe_app/application/pages/saved_page.dart';
 import 'package:recipe_app/application/pages/search_page.dart';
 
@@ -15,7 +16,6 @@ part 'auto_router.gr.dart';
   AutoRoute(
     page: SignInPage,
     path: '/login',
-    initial: true,
   ),
   AutoRoute(
     page: SignUpPage,
@@ -30,26 +30,37 @@ part 'auto_router.gr.dart';
     path: '/login/passwordreset',
   ),
   AutoRoute(
+    page: RecipesListPage,
+    path: '/recipes',
+  ),
+  AutoRoute(
       page: MainScreenPage,
       initial: true,
       guards: [AuthGuard],
       path: '/',
       children: [
         AutoRoute(
-            page: EmptyRouterPage,
-            name: 'SavedRouter',
-            path: 'savedrecipes',
-            children: [
-              AutoRoute(
-                page: SavedPage,
-                path: '',
-              ),
-              AutoRoute(
-                path: 'rrr',
-                page: RandomPage,
-              ),
-            ]),
-        AutoRoute(page: SearchPage),
+          page: EmptyRouterPage,
+          name: 'SavedRouter',
+          path: 'savedrecipes',
+          children: [
+            AutoRoute(
+              page: SavedPage,
+              path: '',
+            ),
+          ],
+        ),
+        AutoRoute(
+          page: EmptyRouterPage,
+          name: 'SearchRouter',
+          path: 'search',
+          children: [
+            AutoRoute(
+              page: SearchPage,
+              path: '',
+            ),
+          ],
+        ),
       ])
 ])
 class AppRouter extends _$AppRouter {

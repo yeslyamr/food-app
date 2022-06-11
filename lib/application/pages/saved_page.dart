@@ -25,11 +25,6 @@ class _SavedPageState extends State<SavedPage> {
           Text(context.router.stack.toString()),
           ElevatedButton(
               onPressed: () {
-                AutoRouter.of(context).push(const RandomRoute());
-              },
-              child: const Text('random')),
-          ElevatedButton(
-              onPressed: () {
                 authStore.signOut();
                 AutoRouter.of(context).replace(const SignInRoute());
               },
@@ -37,20 +32,6 @@ class _SavedPageState extends State<SavedPage> {
           // Text(AutoRouter.of(context).currentPath),
         ],
       )),
-    );
-  }
-}
-
-class RandomPage extends StatelessWidget {
-  const RandomPage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('random')),
-      body: Center(
-        child: Text(context.router.stack.toString()),
-      ),
     );
   }
 }
