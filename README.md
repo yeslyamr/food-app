@@ -18,4 +18,4 @@ This section should list any major frameworks/libraries used to bootstrap your p
 
 - [ ] Add search feature
     - [ ] with ingredients
-- [ ] Add splash page
+- [ ] Add splash page (flutter_native_splash)
