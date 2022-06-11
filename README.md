@@ -8,17 +8,14 @@ This section should list any major frameworks/libraries used to bootstrap your p
 
 * [Firebase](https://pub.dev/packages/firebase_core)
 * [MobX](https://mobx.netlify.app/)
-* [go_router](https://pub.dev/packages/go_router)
+* [auto_route](https://pub.dev/packages/auto_route)
 * [Spoonacular API](https://spoonacular.com/food-api)
 
 
 <!-- ROADMAP -->
 ## TODOs
 
-- [x] Add Changelog
-- [x] Add back to top links
-- [ ] Add Additional Templates w/ Examples
-- [ ] Add "components" document to easily copy & paste sections of the readme
-- [ ] Multi-language Support
-    - [ ] Chinese
-    - [ ] Spanish
+
+- [ ] Add search feature
+    - [ ] with ingredients
+- [ ] Add splash page
