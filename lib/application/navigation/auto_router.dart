@@ -6,34 +6,32 @@ import 'package:recipe_app/application/pages/auth/password_reset_page.dart';
 import 'package:recipe_app/application/pages/auth/sign_in_page.dart';
 import 'package:recipe_app/application/pages/auth/sign_up_page.dart';
 import 'package:recipe_app/application/pages/main_screen_page.dart';
-import 'package:recipe_app/application/pages/recipes_list_page.dart';
+import 'package:recipe_app/application/pages/search/recipes_list_page.dart';
 import 'package:recipe_app/application/pages/saved_page.dart';
-import 'package:recipe_app/application/pages/search_page.dart';
+import 'package:recipe_app/application/pages/search/search_page.dart';
 
 part 'auto_router.gr.dart';
 
-@MaterialAutoRouter(replaceInRouteName: 'Page,Route', routes: [
-  AutoRoute(
-    page: SignInPage,
-    path: '/login',
-  ),
-  AutoRoute(
-    page: SignUpPage,
-    path: '/register',
-  ),
-  AutoRoute(
-    page: EmailVerificationPage,
-    path: '/emailverification',
-  ),
-  AutoRoute(
-    page: PasswordResetPage,
-    path: '/login/passwordreset',
-  ),
-  AutoRoute(
-    page: RecipesListPage,
-    path: '/recipes',
-  ),
-  AutoRoute(
+@MaterialAutoRouter(
+  replaceInRouteName: 'Page,Route',
+  routes: [
+    AutoRoute(
+      page: SignInPage,
+      path: '/login',
+    ),
+    AutoRoute(
+      page: SignUpPage,
+      path: '/register',
+    ),
+    AutoRoute(
+      page: EmailVerificationPage,
+      path: '/emailverification',
+    ),
+    AutoRoute(
+      page: PasswordResetPage,
+      path: '/login/passwordreset',
+    ),
+    AutoRoute(
       page: MainScreenPage,
       initial: true,
       guards: [AuthGuard],
@@ -42,7 +40,7 @@ part 'auto_router.gr.dart';
         AutoRoute(
           page: EmptyRouterPage,
           name: 'SavedRouter',
-          path: 'savedrecipes',
+          path: 'saved',
           children: [
             AutoRoute(
               page: SavedPage,
@@ -59,10 +57,16 @@ part 'auto_router.gr.dart';
               page: SearchPage,
               path: '',
             ),
+            AutoRoute(
+              page: RecipesListPage,
+              path: ':query',
+            ),
           ],
         ),
-      ])
-])
+      ],
+    ),
+  ],
+)
 class AppRouter extends _$AppRouter {
   AppRouter({required super.authGuard});
 }

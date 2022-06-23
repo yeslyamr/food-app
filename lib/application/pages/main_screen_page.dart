@@ -13,13 +13,18 @@ class MainScreenPage extends StatelessWidget {
           SearchRouter(),
           SavedRouter(),
         ],
-        appBarBuilder: (_, tabsRouter) =>
-            AppBar(title: const Text('Home page')),
+        appBarBuilder: (_, tabsRouter) => AppBar(
+              title: const Text('Home page'),
+              leading: const AutoLeadingButton(),
+              centerTitle: true,
+            ),
         bottomNavigationBuilder:
             (BuildContext context, TabsRouter tabsRouter) => SizedBox(
                   height: kBottomNavigationBarHeight,
                   child: SalomonBottomBar(
                     
+                    selectedItemColor: Colors.red,
+                    unselectedItemColor: Colors.blue,
                     currentIndex: tabsRouter.activeIndex,
                     onTap: tabsRouter.setActiveIndex,
                     items: [
@@ -34,4 +39,3 @@ class MainScreenPage extends StatelessWidget {
                 ));
   }
 }
-
