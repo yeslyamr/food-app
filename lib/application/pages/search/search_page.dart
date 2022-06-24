@@ -16,52 +16,98 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   final _store = SearchStore();
   Timer? _debounce;
-  // final _controller = TextEditingController();
-  // late final FocusNode _focusNode;
+  final _controller = TextEditingController();
+  final FocusNode _focusNode = FocusNode();
+  final GlobalKey _autocompleteKey = GlobalKey();
 
-  // @override
-  // void initState() {
-  //   _focusNode = FocusNode();
-  //   super.initState();
-  // }
+  @override
+  void initState() {
+    // to move cursor to the end of the textfield
+    _controller.addListener(() {
+      final String text = _controller.text.toLowerCase();
+      _controller.value = _controller.value.copyWith(
+        text: text,
+        selection:
+            TextSelection(baseOffset: text.length, extentOffset: text.length),
+        composing: TextRange.empty,
+      );
+    });
+    super.initState();
+  }
 
-  // @override
-  // void dispose() {
-  //   _focusNode.dispose();
-  //   _controller.dispose();
-  //   super.dispose();
-  // }
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 8),
-            child: Observer(builder: (_) {
-              _store.autocompleteSuggestions;
-              return RawAutocomplete(
-                // key: GlobalKey(debugLabel: 'as'),
-                // textEditingController: _controller,
-                // focusNode: _focusNode,
-                fieldViewBuilder: _fieldViewBuilder,
-                optionsViewBuilder: _optionsViewBuilder,
-                optionsBuilder: _optionsBuilder,
-              );
-            }),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              color: Colors.green,
-              height: 100,
-              width: 100,
+      body: Observer(
+        builder: (context) {
+          _store.autocompleteSuggestions;
+          return Column(
+            children: [
+              _buildTextField(context),
+              Align(
+                alignment: Alignment.topLeft,
+                child: RawAutocomplete(
+                  key: _autocompleteKey,
+                  textEditingController: _controller,
+                  focusNode: _focusNode,
+                  optionsViewBuilder: _optionsViewBuilder,
+                  optionsBuilder: _optionsBuilder,
+                ),
+              ),
+              // TODO: something can be added underneath the autocomplete dropdown
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  color: Colors.green,
+                  height: 100,
+                  width: 100,
+                ),
+              )
+            ],
+          );
+        },
+      ),
+    );
+  }
+
+  Padding _buildTextField(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 8.0),
+      child: SizedBox(
+        height: 53,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: TextField(
+            controller: _controller,
+            onChanged: (value) async => setState(() {}),
+            focusNode: _focusNode,
+            textInputAction: TextInputAction.search,
+            onEditingComplete: () => AutoRouter.of(context)
+                .push(RecipesListRoute(query: _controller.text.trim())),
+            decoration: InputDecoration(
+              prefixIcon: const Icon(Icons.search),
+              suffixIcon: _controller.text == '' || _controller.text.isEmpty
+                  ? null
+                  : IconButton(
+                      icon: const Icon(Icons.cancel),
+                      onPressed: () => _controller.text = '',
+                    ),
+              hintText: 'Search Recipes',
+              isDense: true,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15),
+              ),
             ),
-          )
-        ],
+          ),
+        ),
       ),
     );
   }
@@ -82,105 +128,49 @@ class _SearchPageState extends State<SearchPage> {
     return [AutocompleteSearch(title: '')];
   }
 
-  Widget _fieldViewBuilder(context, TextEditingController textEditingController,
-      focusNode, onFieldSubmitted) {
-    return SizedBox(
-      height: 53,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-        child: TextFormField(
-          controller: textEditingController,
-          onChanged: (value) async => setState(() {}),
-          focusNode: focusNode,
-          textInputAction: TextInputAction.search,
-          onFieldSubmitted: (value) =>
-              AutoRouter.of(context).push(RecipesListRoute(query: value)),
-          decoration: InputDecoration(
-            prefixIcon: const Icon(Icons.search),
-            suffixIcon: textEditingController.text == '' ||
-                    textEditingController.text.isEmpty
-                ? null
-                : IconButton(
-                    icon: const Icon(Icons.cancel),
-                    onPressed: () => textEditingController.text = '',
-                  ),
-            hintText: 'Search Recipes',
-            isDense: true,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(15),
-            ),
-          ),
+  Widget _optionsViewBuilder(context, onSelected, options) {
+    return Align(
+      alignment: Alignment.topLeft,
+      child: Material(
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(bottom: Radius.circular(4.0)),
         ),
+        child: _store.isAutocompleteSuggestionsListEmpty
+            ? null
+            : Container(
+                color: Colors.amber,
+                height: MediaQuery.of(context).size.height -
+                    kBottomNavigationBarHeight -
+                    kToolbarHeight -
+                    MediaQuery.of(context).padding.bottom -
+                    MediaQuery.of(context).padding.top -
+                    61,
+                child: MediaQuery.removePadding(
+                  removeTop: true,
+                  context: context,
+                  child: ListView.builder(
+                    itemCount: _store.autocompleteSuggestions.length,
+                    itemBuilder: (context, index) => ListTile(
+                      leading: const Icon(Icons.search),
+                      trailing: IconButton(
+                          icon: const Icon(Icons.north_west),
+                          onPressed: () {
+                            final text =
+                                _store.autocompleteSuggestions[index].title ??
+                                    '';
+                            _controller.text = '$text ';
+                          }),
+                      onTap: () => AutoRouter.of(context).push(RecipesListRoute(
+                          query: _store.autocompleteSuggestions[index].title ??
+                              '')),
+                      title: Text(
+                          _store.autocompleteSuggestions[index].title ?? '',
+                          overflow: TextOverflow.ellipsis),
+                    ),
+                  ),
+                ),
+              ),
       ),
     );
   }
-
-  Widget _optionsViewBuilder(context, onSelected, options) => Align(
-        alignment: Alignment.topLeft,
-        child: Material(
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(bottom: Radius.circular(4.0)),
-          ),
-          child: _store.isAutocompleteSuggestionsListEmpty
-              ? null
-              : Container(
-                  color: Colors.amber,
-                  height: MediaQuery.of(context).size.height -
-                      kBottomNavigationBarHeight -
-                      kToolbarHeight -
-                      MediaQuery.of(context).padding.bottom -
-                      MediaQuery.of(context).padding.top -
-                      61,
-                  child: MediaQuery.removePadding(
-                    removeTop: true,
-                    context: context,
-                    child: ListView.builder(
-                        itemCount: _store.autocompleteSuggestions.length,
-                        itemBuilder: (context, index) => ListTile(
-                              leading: const Icon(Icons.search),
-                              // trailing: IconButton(
-                              //   icon: const Icon(Icons.arrow_upward),
-                              //   onPressed: () => _controller.text = _store
-                              //           .autocompleteSuggestions[index].title ??
-                              //       '',
-                              // ),
-                              onTap: () => AutoRouter.of(context).push(
-                                  RecipesListRoute(
-                                      query: _store
-                                              .autocompleteSuggestions[index]
-                                              .title ??
-                                          '')),
-                              title: Text(
-                                  _store.autocompleteSuggestions[index].title ??
-                                      '',
-                                  overflow: TextOverflow.ellipsis),
-                            )
-
-                        // InkWell(
-                        //   onTap: () => AutoRouter.of(context).push(
-                        //       RecipesListRoute(
-                        //           query: _store
-                        //                   .autocompleteSuggestions[index].title ??
-                        //               'no res')),
-                        //   child: Padding(
-                        //     padding: const EdgeInsets.all(16.0),
-                        //     child: Row(
-                        //       children: [
-                        //         const Icon(Icons.search),
-                        //         Expanded(
-                        //           child: Text(
-                        //               _store.autocompleteSuggestions[index]
-                        //                       .title ??
-                        //                   'asdf',
-                        //               overflow: TextOverflow.ellipsis),
-                        //         ),
-                        //       ],
-                        //     ),
-                        //   ),
-                        // ),
-                        ),
-                  ),
-                ),
-        ),
-      );
 }
