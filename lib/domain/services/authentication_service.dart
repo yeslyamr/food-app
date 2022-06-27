@@ -18,7 +18,7 @@ abstract class AuthenticationService {
 
   Future<void> resetPassword({required String email});
 
-  Future<void> sendEmailVerification();  
+  Future<void> sendEmailVerification();
 }
 
 class FirebaseAuthenticationService implements AuthenticationService {

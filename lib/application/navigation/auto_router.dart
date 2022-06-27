@@ -6,9 +6,11 @@ import 'package:recipe_app/application/pages/auth/password_reset_page.dart';
 import 'package:recipe_app/application/pages/auth/sign_in_page.dart';
 import 'package:recipe_app/application/pages/auth/sign_up_page.dart';
 import 'package:recipe_app/application/pages/main_screen_page.dart';
+import 'package:recipe_app/application/pages/recipe_page.dart';
 import 'package:recipe_app/application/pages/search/recipes_list_page.dart';
 import 'package:recipe_app/application/pages/saved_page.dart';
 import 'package:recipe_app/application/pages/search/search_page.dart';
+import 'package:recipe_app/domain/models/search_response/recipe_info.dart';
 
 part 'auto_router.gr.dart';
 
@@ -30,6 +32,10 @@ part 'auto_router.gr.dart';
     AutoRoute(
       page: PasswordResetPage,
       path: '/login/passwordreset',
+    ),
+    AutoRoute(
+      page: RecipePage,
+      path: '/recipe/:recipeInfo',
     ),
     AutoRoute(
       page: MainScreenPage,

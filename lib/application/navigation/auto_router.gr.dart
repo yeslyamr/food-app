@@ -37,6 +37,12 @@ class _$AppRouter extends RootStackRouter {
       return MaterialPageX<dynamic>(
           routeData: routeData, child: const PasswordResetPage());
     },
+    RecipeRoute.name: (routeData) {
+      final args = routeData.argsAs<RecipeRouteArgs>();
+      return MaterialPageX<dynamic>(
+          routeData: routeData,
+          child: RecipePage(key: args.key, recipeInfo: args.recipeInfo));
+    },
     MainScreenRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
           routeData: routeData, child: const MainScreenPage());
@@ -71,6 +77,7 @@ class _$AppRouter extends RootStackRouter {
         RouteConfig(SignUpRoute.name, path: '/register'),
         RouteConfig(EmailVerificationRoute.name, path: '/emailverification'),
         RouteConfig(PasswordResetRoute.name, path: '/login/passwordreset'),
+        RouteConfig(RecipeRoute.name, path: '/recipe/:recipeInfo'),
         RouteConfig(MainScreenRoute.name, path: '/', guards: [
           authGuard
         ], children: [
@@ -125,6 +132,30 @@ class PasswordResetRoute extends PageRouteInfo<void> {
       : super(PasswordResetRoute.name, path: '/login/passwordreset');
 
   static const String name = 'PasswordResetRoute';
+}
+
+/// generated route for
+/// [RecipePage]
+class RecipeRoute extends PageRouteInfo<RecipeRouteArgs> {
+  RecipeRoute({Key? key, required RecipeInfo recipeInfo})
+      : super(RecipeRoute.name,
+            path: '/recipe/:recipeInfo',
+            args: RecipeRouteArgs(key: key, recipeInfo: recipeInfo));
+
+  static const String name = 'RecipeRoute';
+}
+
+class RecipeRouteArgs {
+  const RecipeRouteArgs({this.key, required this.recipeInfo});
+
+  final Key? key;
+
+  final RecipeInfo recipeInfo;
+
+  @override
+  String toString() {
+    return 'RecipeRouteArgs{key: $key, recipeInfo: $recipeInfo}';
+  }
 }
 
 /// generated route for

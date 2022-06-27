@@ -45,7 +45,7 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: true,
+      backgroundColor: Colors.amber.shade200,
       body: Observer(
         builder: (context) {
           _store.autocompleteSuggestions;
@@ -63,14 +63,6 @@ class _SearchPageState extends State<SearchPage> {
                 ),
               ),
               // TODO: something can be added underneath the autocomplete dropdown
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  color: Colors.green,
-                  height: 100,
-                  width: 100,
-                ),
-              )
             ],
           );
         },
@@ -78,34 +70,31 @@ class _SearchPageState extends State<SearchPage> {
     );
   }
 
-  Padding _buildTextField(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 8.0),
-      child: SizedBox(
-        height: 53,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          child: TextField(
-            controller: _controller,
-            onChanged: (value) async => setState(() {}),
-            focusNode: _focusNode,
-            textInputAction: TextInputAction.search,
-            onEditingComplete: () => AutoRouter.of(context)
-                .push(RecipesListRoute(query: _controller.text.trim())),
-            decoration: InputDecoration(
-              prefixIcon: const Icon(Icons.search),
-              suffixIcon: _controller.text == '' || _controller.text.isEmpty
-                  ? null
-                  : IconButton(
-                      icon: const Icon(Icons.cancel),
-                      onPressed: () => _controller.text = '',
-                    ),
-              hintText: 'Search Recipes',
-              isDense: true,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15),
-              ),
-            ),
+  Container _buildTextField(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(top: 12, bottom: 8),
+      height: 44,
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: TextField(
+        controller: _controller,
+        onChanged: (value) async => setState(() {}),
+        focusNode: _focusNode,
+        textInputAction: TextInputAction.search,
+        onEditingComplete: () => AutoRouter.of(context)
+            .push(RecipesListRoute(query: _controller.text.trim())),
+        decoration: InputDecoration(
+          contentPadding: const EdgeInsets.all(0),
+          prefixIcon: const Icon(Icons.search),
+          suffixIcon: _controller.text == '' || _controller.text.isEmpty
+              ? null
+              : IconButton(
+                  icon: const Icon(Icons.cancel),
+                  onPressed: () => _controller.text = '',
+                ),
+          hintText: 'Search Recipes',
+          isDense: true,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20),
           ),
         ),
       ),
@@ -119,7 +108,7 @@ class _SearchPageState extends State<SearchPage> {
       _store.emptyAutocompleteSuggestions();
       setState(() {});
     } else {
-      _debounce = Timer(const Duration(milliseconds: 500), () async {
+      _debounce = Timer(const Duration(milliseconds: 250), () async {
         await _store.updateAutocompleteSuggestions(
             query: textEditingValue.text.trim());
         setState(() {});
@@ -141,10 +130,10 @@ class _SearchPageState extends State<SearchPage> {
                 color: Colors.amber,
                 height: MediaQuery.of(context).size.height -
                     kBottomNavigationBarHeight -
-                    kToolbarHeight -
+                    // kToolbarHeight -
                     MediaQuery.of(context).padding.bottom -
                     MediaQuery.of(context).padding.top -
-                    61,
+                    64,
                 child: MediaQuery.removePadding(
                   removeTop: true,
                   context: context,

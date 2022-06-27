@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:recipe_app/data/gateways/api_constants.dart';
 import 'package:http/http.dart' as http;
@@ -16,11 +17,11 @@ class NetworkClient {
       {required String path,
       required T Function(dynamic json) parser,
       Map<String, dynamic>? parameters,
-      Map<String, String> headers = ApiConstants.headers}) async {
+      Map<String, String>? headers}) async {
     final url = _makeUri(path, parameters);
     try {
       //GET
-      final response = await _client.get(url, headers: headers);
+      final response = await _client.get(url); //, headers: headers);
 
       if (response.statusCode == 200) {
         final jsonDecoded = jsonDecode(utf8.decode(response.bodyBytes));
@@ -29,6 +30,8 @@ class NetworkClient {
       } else {
         throw ApiException(response.statusCode, response.body);
       }
+    } on SocketException catch (e) {
+      throw ApiException(1, e.message);
     } catch (e) {
       rethrow;
     }

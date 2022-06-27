@@ -8,34 +8,35 @@ class MainScreenPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AutoTabsScaffold(
-        routes: const [
-          SearchRouter(),
-          SavedRouter(),
-        ],
-        appBarBuilder: (_, tabsRouter) => AppBar(
-              title: const Text('Home page'),
-              leading: const AutoLeadingButton(),
-              centerTitle: true,
-            ),
-        bottomNavigationBuilder:
-            (BuildContext context, TabsRouter tabsRouter) => SizedBox(
-                  height: kBottomNavigationBarHeight,
-                  child: SalomonBottomBar(
-                    
-                    selectedItemColor: Colors.red,
-                    unselectedItemColor: Colors.blue,
-                    currentIndex: tabsRouter.activeIndex,
-                    onTap: tabsRouter.setActiveIndex,
-                    items: [
-                      SalomonBottomBarItem(
-                          icon: const Icon(Icons.search),
-                          title: const Text('Search')),
-                      SalomonBottomBarItem(
-                          icon: const Icon(Icons.favorite_sharp),
-                          title: const Text('Saved'))
-                    ],
-                  ),
-                ));
+    return SafeArea(
+      child: AutoTabsScaffold(
+          routes: const [
+            SearchRouter(),
+            SavedRouter(),
+          ],
+          // appBarBuilder: (_, tabsRouter) => AppBar(
+          //       // title: _buildTextField(context  ),// Text('${tabsRouter.current.name}'),
+          //       leading: const AutoLeadingButton(),
+          //       centerTitle: true,
+          //     ),
+          bottomNavigationBuilder:
+              (BuildContext context, TabsRouter tabsRouter) => SizedBox(
+                    height: kBottomNavigationBarHeight,
+                    child: SalomonBottomBar(
+                      selectedItemColor: Colors.red,
+                      unselectedItemColor: Colors.blue,
+                      currentIndex: tabsRouter.activeIndex,
+                      onTap: tabsRouter.setActiveIndex,
+                      items: [
+                        SalomonBottomBarItem(
+                            icon: const Icon(Icons.search),
+                            title: const Text('Search')),
+                        SalomonBottomBarItem(
+                            icon: const Icon(Icons.favorite_sharp),
+                            title: const Text('Saved'))
+                      ],
+                    ),
+                  )),
+    );
   }
 }
