@@ -18,4 +18,5 @@ This section should list any major frameworks/libraries used to bootstrap your p
 
 - [ ] Add search feature
     - [ ] with ingredients
+    - [ ] add animation to textfield on SearchPage
 - [ ] Add splash page (flutter_native_splash)
