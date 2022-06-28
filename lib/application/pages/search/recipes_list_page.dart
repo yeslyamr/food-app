@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:recipe_app/application/navigation/auto_router.dart';
 import 'package:recipe_app/application/stores/recipes_list_store.dart';
-import 'package:recipe_app/application/widgets/recipe_in_list_widget.dart';
+import 'package:recipe_app/application/widgets/recipe_card_widget.dart';
 import 'package:recipe_app/domain/models/search_response/recipe_info.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
@@ -49,45 +49,9 @@ class _RecipesListPageState extends State<RecipesListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey,
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(8),
-            child: Row(
-              children: [
-                Container(
-                  height: 40,
-                  width: 40,
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.black26,
-                  ),
-                  child: const AutoLeadingButton(color: Colors.white),
-                ),
-                Expanded(
-                  child: Container(
-                    height: 44,
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: TextField(
-                      readOnly: true,
-                      onTap: () => AutoRouter.of(context).pop(),
-                      textInputAction: TextInputAction.search,
-                      decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.all(0),
-                        prefixIcon: const Icon(Icons.search),
-                        hintText: widget.query,
-                        isDense: true,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
+          _buildTextField(context),
           Expanded(
             child: PagedGridView<int, RecipeInfo>(
               padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
@@ -115,18 +79,43 @@ class _RecipesListPageState extends State<RecipesListPage> {
                       ),
                   itemBuilder: (context, item, index) {
                     return InkWell(
-                      splashColor: Colors.red,
                       onTap: () {
                         AutoRouter.of(context)
                             .push(RecipeRoute(recipeInfo: item));
-                        print('QEWR');
                       },
-                      child: RecipeCard(item: item),
+                      child: RecipeCardWidget(item: item),
                     );
                   }),
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Container _buildTextField(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 12),
+      height: 44,
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: TextField(
+        readOnly: true,
+        onTap: () {
+          AutoRouter.of(context).pop();
+        },
+        textInputAction: TextInputAction.search,
+        decoration: InputDecoration(
+          contentPadding: const EdgeInsets.all(0),
+          prefixIcon: const Icon(Icons.search),
+          hintText: widget.query,
+          isDense: true,
+          border: OutlineInputBorder(
+            // borderSide: const BorderSide(
+            //   color: Color.fromRGBO(255, 156, 0, 1),
+            // ),
+            borderRadius: BorderRadius.circular(20),
+          ),
+        ),
       ),
     );
   }

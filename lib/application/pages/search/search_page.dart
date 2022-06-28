@@ -45,7 +45,6 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.amber.shade200,
       body: Observer(
         builder: (context) {
           _store.autocompleteSuggestions;
@@ -72,12 +71,14 @@ class _SearchPageState extends State<SearchPage> {
 
   Container _buildTextField(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(top: 12, bottom: 8),
+      margin: const EdgeInsets.only(top: 12, bottom: 12),
       height: 44,
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: TextField(
         controller: _controller,
-        onChanged: (value) async => setState(() {}),
+        onChanged: (value) {
+          setState(() {});
+        },
         focusNode: _focusNode,
         textInputAction: TextInputAction.search,
         onEditingComplete: () => AutoRouter.of(context)
@@ -110,7 +111,7 @@ class _SearchPageState extends State<SearchPage> {
     } else {
       _debounce = Timer(const Duration(milliseconds: 250), () async {
         await _store.updateAutocompleteSuggestions(
-            query: textEditingValue.text.trim());
+            query: textEditingValue.text.trim(), number: 11);
         setState(() {});
       });
     }
@@ -124,38 +125,68 @@ class _SearchPageState extends State<SearchPage> {
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(bottom: Radius.circular(4.0)),
         ),
-        child: _store.isAutocompleteSuggestionsListEmpty
+        child: (_store.isAutocompleteSuggestionsListEmpty &&
+                _controller.text == '')
             ? null
             : Container(
-                color: Colors.amber,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    color: Theme.of(context).colorScheme.surface),
                 height: MediaQuery.of(context).size.height -
                     kBottomNavigationBarHeight -
-                    // kToolbarHeight -
+                    kToolbarHeight -
                     MediaQuery.of(context).padding.bottom -
                     MediaQuery.of(context).padding.top -
-                    64,
+                    68,
                 child: MediaQuery.removePadding(
                   removeTop: true,
                   context: context,
-                  child: ListView.builder(
-                    itemCount: _store.autocompleteSuggestions.length,
-                    itemBuilder: (context, index) => ListTile(
-                      leading: const Icon(Icons.search),
-                      trailing: IconButton(
-                          icon: const Icon(Icons.north_west),
-                          onPressed: () {
-                            final text =
-                                _store.autocompleteSuggestions[index].title ??
-                                    '';
-                            _controller.text = '$text ';
-                          }),
-                      onTap: () => AutoRouter.of(context).push(RecipesListRoute(
-                          query: _store.autocompleteSuggestions[index].title ??
-                              '')),
-                      title: Text(
-                          _store.autocompleteSuggestions[index].title ?? '',
-                          overflow: TextOverflow.ellipsis),
-                    ),
+                  child: NotificationListener<OverscrollIndicatorNotification>(
+                    onNotification: (overscroll) {
+                      overscroll.disallowIndicator();
+                      return true;
+                    },
+                    child: _store.isAutocompleteSuggestionsListEmpty
+                        ? Container(
+                            alignment: Alignment.topCenter,
+                            width: double.infinity,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: CircularProgressIndicator(
+                                  color:
+                                      Theme.of(context).colorScheme.secondary),
+                            ))
+                        : ListView.builder(
+                            itemCount: _store.autocompleteSuggestions.length,
+                            itemBuilder: (context, index) => ListTile(
+                              textColor:
+                                  Theme.of(context).colorScheme.onSurface,
+                              iconColor:
+                                  Theme.of(context).colorScheme.onSurface,
+                              leading: const Icon(Icons.search),
+                              trailing: IconButton(
+                                  icon: const Icon(Icons.north_west),
+                                  onPressed: () {
+                                    final text = _store
+                                            .autocompleteSuggestions[index]
+                                            .title ??
+                                        '';
+                                    _controller.text = '$text ';
+                                  }),
+                              onTap: () {
+                                AutoRouter.of(context).push<VoidCallback>(
+                                    RecipesListRoute(
+                                        query: _store
+                                                .autocompleteSuggestions[index]
+                                                .title ??
+                                            ''));
+                              },
+                              title: Text(
+                                  _store.autocompleteSuggestions[index].title ??
+                                      '',
+                                  overflow: TextOverflow.ellipsis),
+                            ),
+                          ),
                   ),
                 ),
               ),

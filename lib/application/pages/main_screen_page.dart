@@ -1,8 +1,7 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:recipe_app/application/navigation/auto_router.dart';
-import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
-
 class MainScreenPage extends StatelessWidget {
   const MainScreenPage({Key? key}) : super(key: key);
 
@@ -10,33 +9,60 @@ class MainScreenPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: AutoTabsScaffold(
-          routes: const [
-            SearchRouter(),
-            SavedRouter(),
-          ],
-          // appBarBuilder: (_, tabsRouter) => AppBar(
-          //       // title: _buildTextField(context  ),// Text('${tabsRouter.current.name}'),
-          //       leading: const AutoLeadingButton(),
-          //       centerTitle: true,
-          //     ),
-          bottomNavigationBuilder:
-              (BuildContext context, TabsRouter tabsRouter) => SizedBox(
-                    height: kBottomNavigationBarHeight,
-                    child: SalomonBottomBar(
-                      selectedItemColor: Colors.red,
-                      unselectedItemColor: Colors.blue,
-                      currentIndex: tabsRouter.activeIndex,
-                      onTap: tabsRouter.setActiveIndex,
-                      items: [
-                        SalomonBottomBarItem(
-                            icon: const Icon(Icons.search),
-                            title: const Text('Search')),
-                        SalomonBottomBarItem(
-                            icon: const Icon(Icons.favorite_sharp),
-                            title: const Text('Saved'))
-                      ],
-                    ),
-                  )),
+        routes: const [
+          Search(),
+          Saved(),
+        ],
+        appBarBuilder: (_, tabsRouter) {
+          return
+              //  tabsRouter.current.name == SearchRouter.name
+              //     ? PreferredSize(
+              //         preferredSize: Size(0, 0),
+              //         child: Container(),
+              //       )
+              //     :
+              AppBar(
+            elevation: 0,
+            centerTitle: true,
+            title: Text(tabsRouter.current.name),
+            actions: [
+              Padding(
+                padding: const EdgeInsets.only(right: 8.0),
+                child: InkWell(
+                  onTap: () {
+                    AutoRouter.of(context).push(const ProfileRoute());
+                  },
+                  child: CircleAvatar(
+                      foregroundImage: FirebaseAuth
+                                  .instance.currentUser?.photoURL !=
+                              null
+                          ? NetworkImage(
+                              FirebaseAuth.instance.currentUser?.photoURL ?? '')
+                          : null),
+                ),
+              )
+            ],
+            leading: tabsRouter.canPopSelfOrChildren
+                ? const AutoLeadingButton()
+                : null,
+          );
+        },
+        bottomNavigationBuilder:
+            (BuildContext context, TabsRouter tabsRouter) =>
+                BottomNavigationBar(
+                    currentIndex: tabsRouter.activeIndex,
+                    onTap: tabsRouter.setActiveIndex,
+                    items: const [
+              BottomNavigationBarItem(
+                icon: Icon(Icons.search),
+                label: ('Search'),
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.favorite_sharp),
+                label: ('Saved'),
+              ),
+            ]),
+      ),
     );
   }
 }

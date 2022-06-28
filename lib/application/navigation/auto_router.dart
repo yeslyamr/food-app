@@ -6,6 +6,7 @@ import 'package:recipe_app/application/pages/auth/password_reset_page.dart';
 import 'package:recipe_app/application/pages/auth/sign_in_page.dart';
 import 'package:recipe_app/application/pages/auth/sign_up_page.dart';
 import 'package:recipe_app/application/pages/main_screen_page.dart';
+import 'package:recipe_app/application/pages/profile_page.dart';
 import 'package:recipe_app/application/pages/recipe_page.dart';
 import 'package:recipe_app/application/pages/search/recipes_list_page.dart';
 import 'package:recipe_app/application/pages/saved_page.dart';
@@ -38,6 +39,10 @@ part 'auto_router.gr.dart';
       path: '/recipe/:recipeInfo',
     ),
     AutoRoute(
+      page: ProfilePage,
+      path: '/profile',
+    ),
+    AutoRoute(
       page: MainScreenPage,
       initial: true,
       guards: [AuthGuard],
@@ -45,7 +50,7 @@ part 'auto_router.gr.dart';
       children: [
         AutoRoute(
           page: EmptyRouterPage,
-          name: 'SavedRouter',
+          name: 'Saved',
           path: 'saved',
           children: [
             AutoRoute(
@@ -56,7 +61,7 @@ part 'auto_router.gr.dart';
         ),
         AutoRoute(
           page: EmptyRouterPage,
-          name: 'SearchRouter',
+          name: 'Search',
           path: 'search',
           children: [
             AutoRoute(

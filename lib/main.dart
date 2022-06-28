@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:recipe_app/application/navigation/auto_router.dart';
 import 'package:recipe_app/application/stores/auth/auth_store.dart';
@@ -35,6 +36,12 @@ class MyApp extends StatelessWidget {
         title: 'Food app',
         routeInformationParser: _appRouter.defaultRouteParser(),
         routerDelegate: _appRouter.delegate(),
+        theme: ThemeData(
+          fontFamily: GoogleFonts.poppins().fontFamily,
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: const Color.fromRGBO(158, 178, 59, 1),
+          ),
+        ),
       ),
     );
   }

@@ -43,15 +43,19 @@ class _$AppRouter extends RootStackRouter {
           routeData: routeData,
           child: RecipePage(key: args.key, recipeInfo: args.recipeInfo));
     },
+    ProfileRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+          routeData: routeData, child: const ProfilePage());
+    },
     MainScreenRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
           routeData: routeData, child: const MainScreenPage());
     },
-    SavedRouter.name: (routeData) {
+    Saved.name: (routeData) {
       return MaterialPageX<dynamic>(
           routeData: routeData, child: const EmptyRouterPage());
     },
-    SearchRouter.name: (routeData) {
+    Search.name: (routeData) {
       return MaterialPageX<dynamic>(
           routeData: routeData, child: const EmptyRouterPage());
     },
@@ -78,23 +82,23 @@ class _$AppRouter extends RootStackRouter {
         RouteConfig(EmailVerificationRoute.name, path: '/emailverification'),
         RouteConfig(PasswordResetRoute.name, path: '/login/passwordreset'),
         RouteConfig(RecipeRoute.name, path: '/recipe/:recipeInfo'),
+        RouteConfig(ProfileRoute.name, path: '/profile'),
         RouteConfig(MainScreenRoute.name, path: '/', guards: [
           authGuard
         ], children: [
-          RouteConfig(SavedRouter.name,
+          RouteConfig(Saved.name,
               path: 'saved',
               parent: MainScreenRoute.name,
               children: [
-                RouteConfig(SavedRoute.name, path: '', parent: SavedRouter.name)
+                RouteConfig(SavedRoute.name, path: '', parent: Saved.name)
               ]),
-          RouteConfig(SearchRouter.name,
+          RouteConfig(Search.name,
               path: 'search',
               parent: MainScreenRoute.name,
               children: [
-                RouteConfig(SearchRoute.name,
-                    path: '', parent: SearchRouter.name),
+                RouteConfig(SearchRoute.name, path: '', parent: Search.name),
                 RouteConfig(RecipesListRoute.name,
-                    path: ':query', parent: SearchRouter.name)
+                    path: ':query', parent: Search.name)
               ])
         ])
       ];
@@ -159,6 +163,14 @@ class RecipeRouteArgs {
 }
 
 /// generated route for
+/// [ProfilePage]
+class ProfileRoute extends PageRouteInfo<void> {
+  const ProfileRoute() : super(ProfileRoute.name, path: '/profile');
+
+  static const String name = 'ProfileRoute';
+}
+
+/// generated route for
 /// [MainScreenPage]
 class MainScreenRoute extends PageRouteInfo<void> {
   const MainScreenRoute({List<PageRouteInfo>? children})
@@ -169,20 +181,20 @@ class MainScreenRoute extends PageRouteInfo<void> {
 
 /// generated route for
 /// [EmptyRouterPage]
-class SavedRouter extends PageRouteInfo<void> {
-  const SavedRouter({List<PageRouteInfo>? children})
-      : super(SavedRouter.name, path: 'saved', initialChildren: children);
+class Saved extends PageRouteInfo<void> {
+  const Saved({List<PageRouteInfo>? children})
+      : super(Saved.name, path: 'saved', initialChildren: children);
 
-  static const String name = 'SavedRouter';
+  static const String name = 'Saved';
 }
 
 /// generated route for
 /// [EmptyRouterPage]
-class SearchRouter extends PageRouteInfo<void> {
-  const SearchRouter({List<PageRouteInfo>? children})
-      : super(SearchRouter.name, path: 'search', initialChildren: children);
+class Search extends PageRouteInfo<void> {
+  const Search({List<PageRouteInfo>? children})
+      : super(Search.name, path: 'search', initialChildren: children);
 
-  static const String name = 'SearchRouter';
+  static const String name = 'Search';
 }
 
 /// generated route for
