@@ -1,6 +1,7 @@
 import 'package:recipe_app/data/gateways/api_constants.dart';
 import 'package:recipe_app/data/gateways/network_client.dart';
 import 'package:recipe_app/domain/models/autocomplete_search.dart';
+import 'package:recipe_app/domain/models/search_response/recipe_info.dart';
 import 'package:recipe_app/domain/models/search_response/search_response.dart';
 
 abstract class RecipesRepository {
@@ -9,6 +10,8 @@ abstract class RecipesRepository {
 
   Future<SearchResponse> searchRecipes(
       {required String query, required int offset, int? number});
+
+  Future<RecipeInfo> getRecipeInfo({required int id});
 }
 
 class RecipesRepositoryImpl implements RecipesRepository {
@@ -54,6 +57,20 @@ class RecipesRepositoryImpl implements RecipesRepository {
           },
           parser: (dynamic json) {
             return SearchResponse.fromJson(json);
+          });
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<RecipeInfo> getRecipeInfo({required int id}) async {
+    try {
+      return await _client.get(
+          path: '/recipes/$id/information',
+          parameters: {'apiKey': ApiConstants.apiKey},
+          parser: (dynamic json) {
+            return RecipeInfo.fromJson(json);
           });
     } catch (e) {
       rethrow;

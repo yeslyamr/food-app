@@ -2,13 +2,17 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:recipe_app/application/navigation/auto_router.dart';
 import 'package:recipe_app/application/stores/recipes_list_store.dart';
+import 'package:recipe_app/application/stores/favourite_recipes_store.dart';
 import 'package:recipe_app/application/widgets/recipe_card_widget.dart';
 import 'package:recipe_app/domain/models/search_response/recipe_info.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class RecipesListPage extends StatefulWidget {
-  const RecipesListPage({Key? key, required this.query}) : super(key: key);
+  const RecipesListPage(
+      {Key? key, required this.query, required this.favouriteStore})
+      : super(key: key);
 
+  final FavouriteRecipesStore favouriteStore;
   final String query;
 
   @override
@@ -54,6 +58,7 @@ class _RecipesListPageState extends State<RecipesListPage> {
           _buildTextField(context),
           Expanded(
             child: PagedGridView<int, RecipeInfo>(
+              showNewPageProgressIndicatorAsGridChild: false,
               padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   childAspectRatio: 0.85,
@@ -63,11 +68,6 @@ class _RecipesListPageState extends State<RecipesListPage> {
                   mainAxisExtent: null),
               pagingController: _pagingController,
               builderDelegate: PagedChildBuilderDelegate<RecipeInfo>(
-                  // newPageProgressIndicatorBuilder: (context) => Container(
-                  //   // width: double.infinity,
-                  //   alignment: Alignment.center,
-                  //   child: const CircularProgressIndicator(),
-                  // ),
                   noItemsFoundIndicatorBuilder: (context) => Container(
                         padding: const EdgeInsets.only(top: 26.0),
                         width: double.infinity,
@@ -83,7 +83,10 @@ class _RecipesListPageState extends State<RecipesListPage> {
                         AutoRouter.of(context)
                             .push(RecipeRoute(recipeInfo: item));
                       },
-                      child: RecipeCardWidget(item: item),
+                      child: RecipeCardWidget(
+                        recipeInfo: item,
+                        favouriteStore: widget.favouriteStore,
+                      ),
                     );
                   }),
             ),

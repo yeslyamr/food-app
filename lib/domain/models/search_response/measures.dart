@@ -8,7 +8,7 @@ import 'us_measure.dart';
 
 part 'measures.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class Measures {
   Us? us;
   Metric? metric;

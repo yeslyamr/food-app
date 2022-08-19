@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:recipe_app/application/navigation/auto_router.dart';
 import 'package:recipe_app/application/stores/auth/auth_store.dart';
+import 'package:recipe_app/application/stores/favourite_recipes_store.dart';
 import 'package:recipe_app/core/Utils.dart';
 import 'package:recipe_app/domain/services/authentication_service.dart';
 import 'firebase_options.dart';
@@ -21,6 +22,7 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   MyApp({Key? key}) : super(key: key);
   final _appRouter = AppRouter(authGuard: AuthGuard());
+  final favouriteStore = FavouriteRecipesStore();
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +32,12 @@ class MyApp extends StatelessWidget {
           create: (context) =>
               AuthStore(FirebaseAuthenticationService(FirebaseAuth.instance)),
         ),
+        Provider.value(
+          value: favouriteStore,
+        ),
+        // Provider<FavouriteRecipesStore>(
+        //   create: (context) => FavouriteRecipesStore(),
+        // ),
       ],
       child: MaterialApp.router(
         scaffoldMessengerKey: Utils.messengerKey,

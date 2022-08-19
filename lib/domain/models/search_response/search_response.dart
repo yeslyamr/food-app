@@ -5,7 +5,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'search_response.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class SearchResponse {
   List<RecipeInfo>? results;
   int? offset;

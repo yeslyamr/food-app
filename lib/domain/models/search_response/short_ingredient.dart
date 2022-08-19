@@ -4,7 +4,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'short_ingredient.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class ShortIngredient {
   int? id;
   String? name;

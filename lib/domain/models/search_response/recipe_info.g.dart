@@ -105,9 +105,14 @@ Map<String, dynamic> _$RecipeInfoToJson(RecipeInfo instance) =>
       'dishTypes': instance.dishTypes,
       'diets': instance.diets,
       'occasions': instance.occasions,
-      'missedIngredients': instance.missedIngredients,
-      'usedIngredients': instance.usedIngredients,
-      'unusedIngredients': instance.unusedIngredients,
-      'extendedIngredients': instance.extendedIngredients,
-      'analyzedInstructions': instance.analyzedInstructions,
+      'missedIngredients':
+          instance.missedIngredients?.map((e) => e.toJson()).toList(),
+      'usedIngredients':
+          instance.usedIngredients?.map((e) => e.toJson()).toList(),
+      'unusedIngredients':
+          instance.unusedIngredients?.map((e) => e.toJson()).toList(),
+      'extendedIngredients':
+          instance.extendedIngredients?.map((e) => e.toJson()).toList(),
+      'analyzedInstructions':
+          instance.analyzedInstructions?.map((e) => e.toJson()).toList(),
     };

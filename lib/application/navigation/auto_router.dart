@@ -9,8 +9,9 @@ import 'package:recipe_app/application/pages/main_screen_page.dart';
 import 'package:recipe_app/application/pages/profile_page.dart';
 import 'package:recipe_app/application/pages/recipe_page.dart';
 import 'package:recipe_app/application/pages/search/recipes_list_page.dart';
-import 'package:recipe_app/application/pages/saved_page.dart';
+import 'package:recipe_app/application/pages/favourite_recipes_page.dart';
 import 'package:recipe_app/application/pages/search/search_page.dart';
+import 'package:recipe_app/application/stores/favourite_recipes_store.dart';
 import 'package:recipe_app/domain/models/search_response/recipe_info.dart';
 
 part 'auto_router.gr.dart';
@@ -50,11 +51,11 @@ part 'auto_router.gr.dart';
       children: [
         AutoRoute(
           page: EmptyRouterPage,
-          name: 'Saved',
-          path: 'saved',
+          name: 'Favourite',
+          path: 'favourite',
           children: [
             AutoRoute(
-              page: SavedPage,
+              page: FavouriteRecipesPage,
               path: '',
             ),
           ],

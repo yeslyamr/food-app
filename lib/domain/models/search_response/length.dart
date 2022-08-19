@@ -4,7 +4,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'length.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class Length {
   int? number;
   String? unit;

@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:recipe_app/application/navigation/auto_router.dart';
+
 class MainScreenPage extends StatelessWidget {
   const MainScreenPage({Key? key}) : super(key: key);
 
@@ -11,7 +12,7 @@ class MainScreenPage extends StatelessWidget {
       child: AutoTabsScaffold(
         routes: const [
           Search(),
-          Saved(),
+          Favourite(),
         ],
         appBarBuilder: (_, tabsRouter) {
           return
@@ -59,7 +60,7 @@ class MainScreenPage extends StatelessWidget {
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.favorite_sharp),
-                label: ('Saved'),
+                label: ('Favourite'),
               ),
             ]),
       ),

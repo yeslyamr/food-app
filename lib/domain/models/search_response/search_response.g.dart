@@ -18,7 +18,7 @@ SearchResponse _$SearchResponseFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$SearchResponseToJson(SearchResponse instance) =>
     <String, dynamic>{
-      'results': instance.results,
+      'results': instance.results?.map((e) => e.toJson()).toList(),
       'offset': instance.offset,
       'number': instance.number,
       'totalResults': instance.totalResults,

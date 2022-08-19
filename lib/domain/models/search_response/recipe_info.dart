@@ -10,7 +10,7 @@ import 'extended_ingredient.dart';
 
 part 'recipe_info.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class RecipeInfo {
   bool? vegetarian;
   bool? vegan;
@@ -49,7 +49,6 @@ class RecipeInfo {
   List<String>? dishTypes;
   List<String>? diets;
   List<String>? occasions;
-
   List<Ingredient>? missedIngredients;
   List<Ingredient>? usedIngredients;
   List<Ingredient>? unusedIngredients;

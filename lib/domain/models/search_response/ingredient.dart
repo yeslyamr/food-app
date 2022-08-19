@@ -4,7 +4,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'ingredient.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class Ingredient {
   int? id;
   double? amount;

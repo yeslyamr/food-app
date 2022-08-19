@@ -8,7 +8,7 @@ import 'short_ingredient.dart';
 
 part 'step.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class Step {
   int? number;
   String? step;

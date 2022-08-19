@@ -5,7 +5,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'metric_measure.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class Metric {
   double? amount;
   String? unitShort;

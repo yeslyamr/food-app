@@ -2,7 +2,9 @@ import 'dart:async';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:provider/provider.dart';
 import 'package:recipe_app/application/navigation/auto_router.dart';
+import 'package:recipe_app/application/stores/favourite_recipes_store.dart';
 import 'package:recipe_app/application/stores/search_store.dart';
 import 'package:recipe_app/domain/models/autocomplete_search.dart';
 
@@ -70,6 +72,8 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   Container _buildTextField(BuildContext context) {
+    final favouriteStore = Provider.of<FavouriteRecipesStore>(context);
+
     return Container(
       margin: const EdgeInsets.only(top: 12, bottom: 12),
       height: 44,
@@ -81,8 +85,8 @@ class _SearchPageState extends State<SearchPage> {
         },
         focusNode: _focusNode,
         textInputAction: TextInputAction.search,
-        onEditingComplete: () => AutoRouter.of(context)
-            .push(RecipesListRoute(query: _controller.text.trim())),
+        onEditingComplete: () => AutoRouter.of(context).push(RecipesListRoute(
+            query: _controller.text.trim(), favouriteStore: favouriteStore)),
         decoration: InputDecoration(
           contentPadding: const EdgeInsets.all(0),
           prefixIcon: const Icon(Icons.search),
@@ -119,6 +123,8 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   Widget _optionsViewBuilder(context, onSelected, options) {
+    final favouriteStore = Provider.of<FavouriteRecipesStore>(context);
+
     return Align(
       alignment: Alignment.topLeft,
       child: Material(
@@ -179,7 +185,8 @@ class _SearchPageState extends State<SearchPage> {
                                         query: _store
                                                 .autocompleteSuggestions[index]
                                                 .title ??
-                                            ''));
+                                            '',
+                                        favouriteStore: favouriteStore));
                               },
                               title: Text(
                                   _store.autocompleteSuggestions[index].title ??

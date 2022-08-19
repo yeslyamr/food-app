@@ -7,7 +7,7 @@ import 'measures.dart';
 
 part 'extended_ingredient.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class ExtendedIngredient {
   int? id;
   String? aisle;

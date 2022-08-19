@@ -7,7 +7,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'analyzed_instructions.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class AnalyzedInstruction {
   String? name;
   List<Step>? steps;

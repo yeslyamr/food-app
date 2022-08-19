@@ -5,7 +5,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'us_measure.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class Us {
   double? amount;
   String? unitShort;

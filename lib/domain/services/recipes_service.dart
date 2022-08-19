@@ -9,6 +9,8 @@ abstract class RecipesService {
 
   Future<List<RecipeInfo>> getListOfRecipes(
       {required String query, required int offset, int? number});
+
+  Future<RecipeInfo> getRecipeInfo({required int id});
 }
 
 class RecipesServiceImpl implements RecipesService {
@@ -31,6 +33,15 @@ class RecipesServiceImpl implements RecipesService {
       final response = await recipesRepo.searchRecipes(
           query: query, offset: offset, number: number);
       return response.results ?? (throw ApiException(2, 'message'));
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<RecipeInfo> getRecipeInfo({required int id}) async {
+    try {
+      return await recipesRepo.getRecipeInfo(id: id);
     } catch (e) {
       rethrow;
     }

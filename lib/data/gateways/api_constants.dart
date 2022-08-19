@@ -5,7 +5,7 @@ class ApiConstants {
   // };
 
   static String baseUrl = 'api.spoonacular.com';
-  static String apiKey = '6b2bd8863514450a8232b72a6b8dba62';
+  static String apiKey = 'c764d2edaa8a4e77bc78acd4ee116183';
 
   static String autocompleteSearchEndpoint = '/recipes/autocomplete';
   static String searchEndpoint = '/recipes/complexSearch';
