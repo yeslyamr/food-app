@@ -46,6 +46,32 @@ mixin _$FavouriteRecipesStore on _FavouriteRecipesStore, Store {
     });
   }
 
+  late final _$addRecipeInfoToFavouriteAsyncAction = AsyncAction(
+      '_FavouriteRecipesStore.addRecipeInfoToFavourite',
+      context: context);
+
+  @override
+  Future<void> addRecipeInfoToFavourite({required RecipeInfo recipeInfo}) {
+    return _$addRecipeInfoToFavouriteAsyncAction
+        .run(() => super.addRecipeInfoToFavourite(recipeInfo: recipeInfo));
+  }
+
+  late final _$_FavouriteRecipesStoreActionController =
+      ActionController(name: '_FavouriteRecipesStore', context: context);
+
+  @override
+  void removeRecipeInfoFromFavourite(
+      {required DocumentReference<Object?>? docRefToDelete}) {
+    final _$actionInfo = _$_FavouriteRecipesStoreActionController.startAction(
+        name: '_FavouriteRecipesStore.removeRecipeInfoFromFavourite');
+    try {
+      return super
+          .removeRecipeInfoFromFavourite(docRefToDelete: docRefToDelete);
+    } finally {
+      _$_FavouriteRecipesStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
   @override
   String toString() {
     return '''

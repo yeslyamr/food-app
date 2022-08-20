@@ -10,6 +10,7 @@ class RecipeCardWidget extends StatelessWidget {
 
   final RecipeInfo recipeInfo;
   final FavouriteRecipesStore favouriteStore;
+
   @override
   Widget build(BuildContext context) {
     final int time = recipeInfo.readyInMinutes ?? 0;
@@ -69,33 +70,41 @@ class RecipeCardWidget extends StatelessWidget {
                     color: Colors.black45,
                   ),
                   child: Observer(builder: (_) {
-                    var isInFav = false;
+                    bool isInFav = false;
                     DocumentReference? docRefToRecipeToBeDeleted;
-                    for (var asdf
+                    for (var entry
                         in favouriteStore.favouriteRecipesMap.entries) {
-                      if (asdf.value.id == recipeInfo.id) {
+                      if (entry.value.id == recipeInfo.id) {
                         isInFav = true;
-                        docRefToRecipeToBeDeleted = asdf.key;
+                        docRefToRecipeToBeDeleted = entry.key;
                       }
                     }
-                    return isInFav
-                        ? IconButton(
-                            onPressed: () {
-                              favouriteStore.removeRecipeInfoFromFavourite(
-                                  docRefToDelete: docRefToRecipeToBeDeleted);
-                            },
-                            color: Colors.white,
-                            icon: const Icon(Icons.bookmark_remove),
-                          )
-                        : IconButton(
-                            splashRadius: 10,
-                            onPressed: () {
-                              favouriteStore.addRecipeInfoToFavourite(
-                                  recipeInfo: recipeInfo);
-                            },
-                            icon: const Icon(Icons.bookmark_border),
-                            color: Colors.white,
-                          );
+                    return IconButton(
+                      splashRadius: 25,
+                      icon: AnimatedSwitcher(
+                          duration: const Duration(milliseconds: 450),
+                          transitionBuilder: (child, anim) => ScaleTransition(
+                                scale: anim,
+                                child: child,
+                              ),
+                          child: isInFav
+                              ? const Icon(Icons.bookmark,
+                                  color: Colors.white, key: ValueKey('icon1'))
+                              : const Icon(
+                                  Icons.bookmark_outline_rounded,
+                                  color: Colors.white,
+                                  key: ValueKey('icon2'),
+                                )),
+                      onPressed: () {
+                        if (isInFav) {
+                          favouriteStore.removeRecipeInfoFromFavourite(
+                              docRefToDelete: docRefToRecipeToBeDeleted);
+                        } else {
+                          favouriteStore.addRecipeInfoToFavourite(
+                              recipeInfo: recipeInfo);
+                        }
+                      },
+                    );
                   }),
                 ),
               ),

@@ -37,6 +37,7 @@ abstract class _FavouriteRecipesStore with Store {
     });
   }
 
+  @action
   Future<void> addRecipeInfoToFavourite(
       {required RecipeInfo recipeInfo}) async {
     final documentReferenceToAddedRecipe = await _cloudFirestoreService
@@ -46,6 +47,7 @@ abstract class _FavouriteRecipesStore with Store {
     }
   }
 
+  @action
   void removeRecipeInfoFromFavourite(
       {required DocumentReference? docRefToDelete}) {
     if (docRefToDelete != null) {
