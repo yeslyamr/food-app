@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:recipe_app/domain/models/search_response/recipe_info.dart';
 
 class RecipePage extends StatefulWidget {

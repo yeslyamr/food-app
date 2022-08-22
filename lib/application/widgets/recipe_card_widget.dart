@@ -39,9 +39,11 @@ class RecipeCardWidget extends StatelessWidget {
             children: [
               AspectRatio(
                 aspectRatio: 321 / 231,
-                child: Image.network(
-                  recipeInfo.image ?? '',
-                  fit: BoxFit.fill,
+                child: FadeInImage.assetNetwork(
+                  image: recipeInfo.image ?? '',
+                  fadeInCurve: Curves.easeIn,
+                  fadeInDuration: const Duration(milliseconds: 150),
+                  fit: BoxFit.fill, placeholder: 'assets/img/logo_transparent.png',
                 ),
               ),
               Positioned(

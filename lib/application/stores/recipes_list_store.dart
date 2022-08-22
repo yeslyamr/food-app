@@ -16,7 +16,7 @@ abstract class _RecipesListStore with Store {
   //this Mobx store will be needed for another types of searches, i.e. including ingredients and nutritions
 
   Future<List<RecipeInfo>> getRecipes(
-      {required String query, required int offset, int number = 20}) async {
+      {required String query, required int offset, int number = 10}) async {
     try {
       return await _recipesService.getListOfRecipes(
           query: query, offset: offset, number: number);
