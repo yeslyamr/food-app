@@ -1,7 +1,6 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'package:mobx/mobx.dart';
-import 'package:recipe_app/core/Utils.dart';
 import 'package:recipe_app/data/gateways/api_exceptions.dart';
 import 'package:recipe_app/domain/models/search_response/recipe_info.dart';
 import 'package:recipe_app/domain/services/recipes_service.dart';
@@ -20,10 +19,8 @@ abstract class _RecipesListStore with Store {
     try {
       return await _recipesService.getListOfRecipes(
           query: query, offset: offset, number: number);
-    } on ApiException catch (e) {
-      Utils.showSnackBar(e.message);
+    } on ApiException {
       rethrow;
     }
-    // return [];
   }
 }

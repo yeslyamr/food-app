@@ -4,6 +4,7 @@ import 'package:recipe_app/application/navigation/auto_router.dart';
 import 'package:recipe_app/application/stores/recipes_list_store.dart';
 import 'package:recipe_app/application/stores/favourite_recipes_store.dart';
 import 'package:recipe_app/application/widgets/recipe_card_widget.dart';
+import 'package:recipe_app/core/Utils.dart';
 import 'package:recipe_app/domain/models/search_response/recipe_info.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
@@ -46,6 +47,7 @@ class _RecipesListPageState extends State<RecipesListPage> {
         _pagingController.appendPage(newItems, nextPageKey);
       }
     } catch (error) {
+      Utils.showSnackBar(error.toString());
       _pagingController.error = error;
     }
   }
@@ -67,7 +69,7 @@ class _RecipesListPageState extends State<RecipesListPage> {
           SliverPadding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
             sliver: PagedSliverGrid<int, RecipeInfo>(
-              
+              showNewPageErrorIndicatorAsGridChild: false,
               showNewPageProgressIndicatorAsGridChild: false,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   childAspectRatio: 0.85,

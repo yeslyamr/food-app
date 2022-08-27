@@ -1,11 +1,15 @@
 import 'dart:async';
 import 'package:auto_route/auto_route.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:mobx/mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:recipe_app/application/navigation/auto_router.dart';
+import 'package:recipe_app/application/stores/connectivity_store.dart';
 import 'package:recipe_app/application/stores/favourite_recipes_store.dart';
 import 'package:recipe_app/application/stores/search_store.dart';
+import 'package:recipe_app/core/Utils.dart';
 import 'package:recipe_app/domain/models/autocomplete_search.dart';
 
 class SearchPage extends StatefulWidget {
@@ -46,27 +50,58 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Observer(
-        builder: (context) {
-          _store.autocompleteSuggestions;
-          return Column(
-            children: [
-              _buildTextField(context),
-              Align(
-                alignment: Alignment.topLeft,
-                child: RawAutocomplete(
-                  key: _autocompleteKey,
-                  textEditingController: _controller,
-                  focusNode: _focusNode,
-                  optionsViewBuilder: _optionsViewBuilder,
-                  optionsBuilder: _optionsBuilder,
+    final connectivityStore = Provider.of<ConnectivityStore>(context);
+
+    return ReactionBuilder(
+      builder: (BuildContext context) {
+        return reaction((_) => connectivityStore.connectivityStream.value,
+            (result) {
+          if (result == ConnectivityResult.none) {
+            Utils.showSnackBar('No internet connection',
+                backgroundColor: Colors.red);
+          } else {
+            Utils.showSnackBar('Connection is restored',
+                backgroundColor: Colors.green);
+          }
+        });
+      },
+      child: Scaffold(
+        body: Observer(
+          builder: (context) {
+            _store.autocompleteSuggestions;
+            return Column(
+              children: [
+                _buildTextField(context),
+                Observer(
+                  builder: (_) {
+                    connectivityStore.connectionStatus;
+                    if (connectivityStore.connectionStatus ==
+                        ConnectivityResult.none) {
+                      return MediaQuery.of(context).orientation ==
+                              Orientation.portrait
+                          ? Image.asset(
+                              'assets/img/no_internet.gif',
+                            )
+                          : const Text('No connection');
+                    } else {
+                      return Align(
+                        alignment: Alignment.topLeft,
+                        child: RawAutocomplete(
+                          key: _autocompleteKey,
+                          textEditingController: _controller,
+                          focusNode: _focusNode,
+                          optionsViewBuilder: _optionsViewBuilder,
+                          optionsBuilder: _optionsBuilder,
+                        ),
+                      );
+                    }
+                  },
                 ),
-              ),
-              // TODO: something can be added underneath the autocomplete dropdown
-            ],
-          );
-        },
+                // TODO: something can be added underneath the autocomplete dropdown
+              ],
+            );
+          },
+        ),
       ),
     );
   }
