@@ -1,9 +1,9 @@
 # food_app
 
 The functionality:
-    * create account using Firebase Auth
-    * search recipes from Spoonacular API
-    * adds to favourites using Firebase Cloud Firestore
+* create account using Firebase Auth
+* search recipes from Spoonacular API
+* adds to favourites using Firebase Cloud Firestore
     
 ### Demo
 ![](https://github.com/yeslyamr/food-app/blob/main/assets/img/video_2022-09-03_11-51-53.gif) ![](https://github.com/yeslyamr/food-app/blob/main/assets/img/video_2022-09-03_11-51-48.gif)
@@ -24,7 +24,7 @@ This section should list any major frameworks/libraries used to bootstrap your p
 ## TODOs
 
 
-- [ ] Add search feature
+- [x] Add search feature
     - [ ] with ingredients
     - [ ] add animation to textfield on SearchPage
-- [ ] Add splash page (flutter_native_splash)
+- [x] Add splash page (flutter_native_splash)
